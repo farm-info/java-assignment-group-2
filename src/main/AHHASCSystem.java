@@ -1,19 +1,29 @@
 package main;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.util.*;
+
+enum Role {
+    CENTRE_MANAGER,
+    TECHNICIAN,
+}
+
+enum TechnicianSpecialization {
+    APPLIANCE_REPAIR,
+    ELECTRICAL,
+    PLUMBING,
+    CARPENTRY,
+}
 
 class User {
     private String userId;
     private String username;
     private String password;
-    private String role;
+    private Role role;
 
-    public User(String userId, String username, String password, String role) {
-        this.userId = userId;
+    public User(String username, String password, Role role) {
+        this.userId = UUID.randomUUID().toString();
         this.username = username;
         this.password = password;
         this.role = role;
@@ -43,68 +53,48 @@ class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public void saveToFile() {
-        // Save user details to a text file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("user_details.csv", true))) {
-            writer.write(userId + "," + username + "," + password + "," + role);
-            writer.newLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-}
-
-class EndUser extends User {
-    private String name;
-    private String contactDetails;
-
-    public EndUser(String userId, String username, String password, String name, String contactDetails) {
-        super(userId, username, password, "EndUser");
-        this.name = name;
-        this.contactDetails = contactDetails;
-    }
-
-    public void register() {
-        saveToFile();
-    }
-
-    public void bookAppointment(String technicianId, String appointmentDate) {
-        Appointment appointment = new Appointment(getUserId(), technicianId, appointmentDate);
-        appointment.saveToFile();
+    public String toString() {
+        return userId + "," + username + "," + password + "," + role;
     }
 }
 
 class CentreManager extends User {
-    public CentreManager(String userId, String username, String password) {
-        super(userId, username, password, "CentreManager");
+    UserManager userManager;
+    CustomerManager customerManager;
+
+    public CentreManager(String username, String password) {
+        super(username, password, Role.CENTRE_MANAGER);
+        this.userManager = new UserManager();
+        this.customerManager = new CustomerManager();
     }
 
-    public void manageRoles(String userId, String newRole) {
-        // Manage roles
-        // Update user roles in the file...
+    public UserManager getUserManager() {
+        return userManager;
     }
 
-    public void manageCustomerRegistration(String customerDetails) {
-        // Manage customer registration
-        // Save customer details to the file...
+    public void setUserManager(UserManager userManager) {
+        this.userManager = userManager;
+    }
+
+    public CustomerManager getCustomerManager() {
+        return customerManager;
+    }
+
+    public void setCustomerManager(CustomerManager customerManager) {
+        this.customerManager = customerManager;
     }
 }
 
 class Technician extends User {
-    private String technicianId;
     private String specialization;
+    // TODO did the doc mention specilaization or issit a chatgpt hallucination
 
-    public Technician(String userId, String username, String password, String technicianId, String specialization) {
-        super(userId, username, password, "Technician");
-        this.technicianId = technicianId;
+    public Technician(String username, String password, String specialization) {
+        super(username, password, Role.TECHNICIAN);
         this.specialization = specialization;
     }
 
@@ -121,6 +111,54 @@ class Technician extends User {
     public void provideFeedback(String appointmentId, String feedback) {
         // Provide feedback for an appointment
         // Save feedback to the file...
+    }
+
+    @Override
+    public String toString() {
+        return getUserId() + "," +
+                getUsername() + "," +
+                getPassword() + "," +
+                getRole() + "," +
+                specialization;
+    }
+}
+
+class Customer {
+    private String customerID;
+    private String name;
+    private String contact_number;
+    private String contact_email;
+
+    public Customer(String name, String contactDetails, String contact_email) {
+        this.customerID = UUID.randomUUID().toString();
+        this.name = name;
+        this.contact_number = contactDetails;
+        this.contact_email = contact_email;
+    }
+
+    public String getCustomerID() {
+        return customerID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getContact_number() {
+        return contact_number;
+    }
+
+    public String getContact_email() {
+        return contact_email;
+    }
+
+    public Appointment bookAppointment(String technicianId, String appointmentDate) {
+        Appointment appointment = new Appointment(customerID, technicianId, appointmentDate);
+        return appointment;
+    }
+
+    public String toString() {
+        return customerID + "," + name + "," + contact_number + "," + contact_email;
     }
 }
 
@@ -139,37 +177,157 @@ class Appointment {
         this.paymentStatus = false;
     }
 
-    public void saveToFile() {
-        // Save appointment details to a text file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("appointment_details.csv", true))) {
-            writer.write(appointmentId + "," + customerId + "," + technicianId + "," + appointmentDate + ","
-                    + paymentStatus);
-            writer.newLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private static String generateAppointmentId() {
         // Generate a unique appointment ID
         // Implementation logic...
         return "APPT123";
     }
+
+    public String getAppointmentId() {
+        return appointmentId;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public String getTechnicianId() {
+        return technicianId;
+    }
+
+    public String getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public boolean getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public String toString() {
+        return appointmentId + "," + customerId + "," + technicianId + "," + appointmentDate + "," + paymentStatus;
+    }
+}
+
+// TODO better save to file
+// TODO toString() method for each object
+class DataAccess {
+    static public <T> void saveObjectsToCSV(List<T> objects, String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+            for (T object : objects) {
+                writer.write(object.toString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static public <T> void readObjectsFromCSV(List<T> objects, String filePath) {
+        try (BufferedReader writer = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = writer.readLine()) != null) {
+                @SuppressWarnings("unchecked")
+                T object = parseObjectFromLine(line, (Class<T>) objects.get(0).getClass());
+                objects.add(object);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // TODO test
+    private static <T> T parseObjectFromLine(String line, Class<T> objectType) {
+        String[] values = line.split(",");
+        try {
+            T object = objectType.getDeclaredConstructor().newInstance();
+            int index = 0;
+            for (Field field : objectType.getDeclaredFields()) {
+                field.setAccessible(true);
+                Class<?> fieldType = field.getType();
+                if (fieldType == String.class) {
+                    field.set(object, values[index]);
+                } else if (fieldType == int.class || fieldType == Integer.class) {
+                    field.set(object, Integer.parseInt(values[index]));
+                } else if (fieldType == boolean.class || fieldType == Boolean.class) {
+                    field.set(object, Boolean.parseBoolean(values[index]));
+                }
+                index++;
+            }
+            return object;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
+
+class UserManager {
+    // TODO
+}
+
+class CustomerManager {
+    // TODO
 }
 
 public class AHHASCSystem {
+    List<User> users;
+    List<Customer> customers;
+    List<Appointment> appointments;
+    User currentUser;
+
     public static void main(String[] args) {
-        // Example usage of the AHHASC system
-        CentreManager manager = new CentreManager("M001", "manager1", "password123");
-        manager.manageRoles("E001", "Technician");
+    }
 
-        EndUser endUser = new EndUser("E001", "user1", "password456", "John Doe", "123-456-7890");
-        endUser.register();
-        endUser.bookAppointment("T001", "2024-01-30");
+    void login(String username, String password) {
+        // TODO check in users list for matching username
+        // then check password
+    }
 
-        Technician technician = new Technician("T001", "tech1", "password789", "T001", "Appliance Repair");
-        technician.checkAppointments();
-        technician.collectPayment("APPT123");
-        technician.provideFeedback("APPT123", "Great service!");
+    class UserExistsException extends Exception {
+        public UserExistsException(String message) {
+            super(message);
+        }
+    }
+
+    void createUser(String username, String password, Role role) throws UserExistsException {
+        boolean usernameExists = users.stream().anyMatch(user -> user.getUsername().equals(username));
+        if (usernameExists) {
+            throw new UserExistsException("Username already exists. Please choose a different username.");
+        }
+
+        if (role == Role.CENTRE_MANAGER) {
+            CentreManager manager = new CentreManager(username, password);
+            users.add(manager);
+            System.out.println("Centre Manager created successfully.");
+
+        } else if (role == Role.TECHNICIAN) {
+            throw new IllegalArgumentException("Invalid user type. Technician specialization is required.");
+
+        } else {
+            throw new IllegalArgumentException("Invalid user type.");
+        }
+
+        System.out.println("User created successfully.");
+    }
+
+    void createUser(String username, String password, Role role, TechnicianSpecialization specialization)
+            throws UserExistsException {
+        // WONTFIX duplicate code
+        boolean usernameExists = users.stream().anyMatch(user -> user.getUsername().equals(username));
+        if (usernameExists) {
+            throw new UserExistsException("Username already exists. Please choose a different username.");
+        }
+
+        if (role == Role.TECHNICIAN) {
+            Technician technician = new Technician(username, password,
+                    "Appliance Repair");
+            users.add(technician);
+            System.out.println("Technician created successfully.");
+
+        } else {
+            throw new IllegalArgumentException("Invalid user type.");
+        }
+
+        System.out.println("User created successfully.");
     }
 }
