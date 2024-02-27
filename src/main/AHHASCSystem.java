@@ -209,7 +209,6 @@ class Appointment {
 }
 
 // TODO better save to file
-// TODO toString() method for each object
 class DataAccess {
     static public <T> void saveObjectsToCSV(List<T> objects, String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
