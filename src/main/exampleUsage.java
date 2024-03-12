@@ -2,19 +2,23 @@ package main;
 
 import main.AHHASCSystem;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 public class exampleUsage {
     public static void main(String[] args) {
         // Example usage of the AHHASC system
         AHHASCSystem system = new AHHASCSystem();
-        CentreManager manager = new CentreManager("manager1", "password123");
-        system.users.add(manager);
 
-        Customer customer = new Customer("John Doe", "123-456-7890", "aaa@mail.com");
-        customer.bookAppointment("T001", "2024-01-30");
+        system.login("manager1", "password123");
+        CentreManager c = (CentreManager) system.createUser("manager2", "password123", User.Role.CENTRE_MANAGER);
+        Technician t = (Technician) system.createUser("tech1", "password789", User.Role.TECHNICIAN);
+        Customer cu = (Customer) system.addCustomer("customer idk", "", "");
 
-        Technician technician = new Technician("tech1", "password789", "Appliance Repair");
-        technician.checkAppointments();
-        technician.collectPayment("APPT123");
-        technician.provideFeedback("APPT123", "Great service!");
+        if (system.getCurrentUser().getRole().equals(User.Role.CENTRE_MANAGER)) {
+            system.bookAppointment(cu, t, LocalDate.now(), BigDecimal.valueOf(100));
+
+        } else if (system.getCurrentUser().getRole().equals(User.Role.TECHNICIAN)) {
+        }
     }
 }

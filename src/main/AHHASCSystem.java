@@ -2,25 +2,20 @@ package main;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.*;
+import java.time.LocalDate;
 
-enum Role {
-    CENTRE_MANAGER,
-    TECHNICIAN,
-}
-
-enum TechnicianSpecialization {
-    APPLIANCE_REPAIR,
-    ELECTRICAL,
-    PLUMBING,
-    CARPENTRY,
-}
-
-class User {
+abstract class User {
     private String userId;
     private String username;
     private String password;
     private Role role;
+
+    public enum Role {
+        CENTRE_MANAGER,
+        TECHNICIAN,
+    }
 
     public User(String username, String password, Role role) {
         this.userId = UUID.randomUUID().toString();
@@ -63,39 +58,14 @@ class User {
 }
 
 class CentreManager extends User {
-    UserManager userManager;
-    CustomerManager customerManager;
-
     public CentreManager(String username, String password) {
         super(username, password, Role.CENTRE_MANAGER);
-        this.userManager = new UserManager();
-        this.customerManager = new CustomerManager();
-    }
-
-    public UserManager getUserManager() {
-        return userManager;
-    }
-
-    public void setUserManager(UserManager userManager) {
-        this.userManager = userManager;
-    }
-
-    public CustomerManager getCustomerManager() {
-        return customerManager;
-    }
-
-    public void setCustomerManager(CustomerManager customerManager) {
-        this.customerManager = customerManager;
     }
 }
 
 class Technician extends User {
-    private String specialization;
-    // TODO did the doc mention specilaization or issit a chatgpt hallucination
-
-    public Technician(String username, String password, String specialization) {
+    public Technician(String username, String password) {
         super(username, password, Role.TECHNICIAN);
-        this.specialization = specialization;
     }
 
     public void checkAppointments() {
@@ -118,8 +88,7 @@ class Technician extends User {
         return getUserId() + "," +
                 getUsername() + "," +
                 getPassword() + "," +
-                getRole() + "," +
-                specialization;
+                getRole() + ",";
     }
 }
 
@@ -152,11 +121,6 @@ class Customer {
         return contact_email;
     }
 
-    public Appointment bookAppointment(String technicianId, String appointmentDate) {
-        Appointment appointment = new Appointment(customerID, technicianId, appointmentDate);
-        return appointment;
-    }
-
     public String toString() {
         return customerID + "," + name + "," + contact_number + "," + contact_email;
     }
@@ -164,51 +128,120 @@ class Customer {
 
 class Appointment {
     private String appointmentId;
-    private String customerId;
-    private String technicianId;
-    private String appointmentDate;
-    private boolean paymentStatus;
+    private Customer customer;
+    private Technician technician;
+    private LocalDate creationDate;
+    private LocalDate appointmentDate;
+    private BigDecimal paymentAmount;
+    private Boolean paymentStatus;
+    private String feedback;
 
-    public Appointment(String customerId, String technicianId, String appointmentDate) {
-        this.appointmentId = generateAppointmentId();
-        this.customerId = customerId;
-        this.technicianId = technicianId;
+    public Appointment(Customer customer, Technician technician, LocalDate appointmentDate, BigDecimal paymentAmount) {
+        this.appointmentId = UUID.randomUUID().toString();
+        this.customer = customer;
+        this.technician = technician;
+        this.creationDate = LocalDate.now();
         this.appointmentDate = appointmentDate;
+        this.paymentAmount = paymentAmount;
         this.paymentStatus = false;
-    }
-
-    private static String generateAppointmentId() {
-        // Generate a unique appointment ID
-        // Implementation logic...
-        return "APPT123";
     }
 
     public String getAppointmentId() {
         return appointmentId;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public String getTechnicianId() {
-        return technicianId;
+    public Technician getTechnician() {
+        return technician;
     }
 
-    public String getAppointmentDate() {
-        return appointmentDate;
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public BigDecimal getPaymentAmount() {
+        return paymentAmount;
     }
 
     public boolean getPaymentStatus() {
         return paymentStatus;
     }
 
+    public LocalDate getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    void setTechnician(Technician technician) {
+        this.technician = technician;
+    }
+
+    void setAppointmentDate(LocalDate appointmentDate) {
+        this.appointmentDate = appointmentDate;
+    }
+
+    void setPaymentAmount(BigDecimal paymentAmount) {
+        this.paymentAmount = paymentAmount;
+    }
+
+    void setPaymentStatus(boolean paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    void setPaymentStatus(Boolean paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
     public String toString() {
-        return appointmentId + "," + customerId + "," + technicianId + "," + appointmentDate + "," + paymentStatus;
+        return appointmentId + "," + customer + "," + technician + "," + creationDate + "," + paymentStatus;
     }
 }
 
-// TODO better save to file
+class AppointmentManager {
+    private List<Appointment> appointments;
+
+    public AppointmentManager() {
+    }
+
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+    }
+
+    public void removeAppointment(Appointment appointment) {
+        appointments.remove(appointment);
+    }
+
+    public void updateAppointment(String appointmentID, String customerId, String technicianId, Boolean paymentStatus) {
+        // Update appointment data
+    }
+
+    public void displayAppointments() {
+        // Display appointments from the file...
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+}
+
 class DataAccess {
     static public <T> void saveObjectsToCSV(List<T> objects, String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
@@ -221,12 +254,11 @@ class DataAccess {
         }
     }
 
-    static public <T> void readObjectsFromCSV(List<T> objects, String filePath) {
+    static public <T> void readObjectsFromCSV(List<T> objects, String filePath, Class<T> clazz) {
         try (BufferedReader writer = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = writer.readLine()) != null) {
-                @SuppressWarnings("unchecked")
-                T object = parseObjectFromLine(line, (Class<T>) objects.get(0).getClass());
+                T object = parseObjectFromLine(line, clazz);
                 objects.add(object);
             }
         } catch (IOException e) {
@@ -260,73 +292,197 @@ class DataAccess {
     }
 }
 
-class UserManager {
-    // TODO
-}
-
-class CustomerManager {
-    // TODO
-}
-
 public class AHHASCSystem {
-    List<User> users;
-    List<Customer> customers;
-    List<Appointment> appointments;
-    User currentUser;
+    private List<User> users;
+    private List<Customer> customers;
+    private List<Appointment> appointments;
+    private String userFilePath = "users.csv";
+    private String customerFilePath = "customers.csv";
+    private String appointmentFilePath = "appointments.csv";
+    private User currentUser;
 
-    public static void main(String[] args) {
+    public AHHASCSystem() {
+        users = new ArrayList<>();
+        customers = new ArrayList<>();
+        appointments = new ArrayList<>();
+        DataAccess.readObjectsFromCSV(users, userFilePath, User.class);
+        DataAccess.readObjectsFromCSV(customers, customerFilePath, Customer.class);
+        DataAccess.readObjectsFromCSV(appointments, appointmentFilePath, Appointment.class);
     }
 
-    void login(String username, String password) {
-        // TODO check in users list for matching username
-        // then check password
+    // permission checks
+    private boolean hasCurrentUserPermission(User.Role requiredRole) {
+        return currentUser != null && currentUser.getRole() == requiredRole;
     }
 
-    class UserExistsException extends Exception {
-        public UserExistsException(String message) {
-            super(message);
+    // account management
+    public Boolean login(String username, String password) {
+        for (User user : users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                currentUser = user;
+                System.out.println("Login successful.");
+                return true;
+            }
         }
+        return false;
     }
 
-    void createUser(String username, String password, Role role) throws UserExistsException {
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    // user management
+    public User createUser(String username, String password, User.Role role) {
+        if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
+            System.out.println("Permission denied: Get user list");
+            return null;
+        }
+
         boolean usernameExists = users.stream().anyMatch(user -> user.getUsername().equals(username));
         if (usernameExists) {
-            throw new UserExistsException("Username already exists. Please choose a different username.");
+            System.out.println("Username already exists.");
+            return null;
         }
 
-        if (role == Role.CENTRE_MANAGER) {
-            CentreManager manager = new CentreManager(username, password);
-            users.add(manager);
+        User newUser = null;
+
+        if (role == User.Role.CENTRE_MANAGER) {
+            newUser = new CentreManager(username, password);
+            users.add(newUser);
             System.out.println("Centre Manager created successfully.");
 
-        } else if (role == Role.TECHNICIAN) {
-            throw new IllegalArgumentException("Invalid user type. Technician specialization is required.");
-
-        } else {
-            throw new IllegalArgumentException("Invalid user type.");
-        }
-
-        System.out.println("User created successfully.");
-    }
-
-    void createUser(String username, String password, Role role, TechnicianSpecialization specialization)
-            throws UserExistsException {
-        // WONTFIX duplicate code
-        boolean usernameExists = users.stream().anyMatch(user -> user.getUsername().equals(username));
-        if (usernameExists) {
-            throw new UserExistsException("Username already exists. Please choose a different username.");
-        }
-
-        if (role == Role.TECHNICIAN) {
-            Technician technician = new Technician(username, password,
-                    "Appliance Repair");
-            users.add(technician);
+        } else if (role == User.Role.TECHNICIAN) {
+            newUser = new Technician(username, password);
+            users.add(newUser);
             System.out.println("Technician created successfully.");
 
         } else {
             throw new IllegalArgumentException("Invalid user type.");
         }
 
+        saveUsers();
         System.out.println("User created successfully.");
+        return newUser;
+    }
+
+    public List<User> getUsers() {
+        if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
+            System.out.println("Permission denied: Get user list");
+            return null;
+        }
+
+        return users;
+    }
+
+    public void saveUsers() {
+        DataAccess.saveObjectsToCSV(users, "users.csv");
+    }
+
+    // appointment management
+    public Appointment bookAppointment(Customer customer, Technician technician, LocalDate appointmentDate,
+            BigDecimal paymentAmount) {
+        if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
+            System.out.println("Permission denied: Book appointment");
+            return null;
+        }
+
+        Appointment appointment = new Appointment(customer, technician, appointmentDate, paymentAmount);
+        appointments.add(appointment);
+        return appointment;
+    }
+
+    public Boolean cancelAppointment(Appointment appointment) {
+        if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
+            System.out.println("Permission denied: Cancel appointment");
+            return false;
+        }
+
+        appointments.remove(appointment);
+        return true;
+    }
+
+    // there's nothing to ensure anyone else can edit appointments, like,
+    // technicians can edit stuff from their list, which is a big no
+    // TODO implement setters for them
+
+    public List<Appointment> getTechnicianAppointments() {
+        if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
+            System.out.println("Permission denied: Cancel appointment");
+            return null;
+        }
+
+        return appointments;
+    }
+
+    // customer manaaement
+    public Customer addCustomer(String name, String contactDetails, String contactEmail) {
+        if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
+            System.out.println("Permission denied: Add customer");
+            return null;
+        }
+
+        Customer newCustomer = new Customer(name, contactDetails, contactEmail);
+        customers.add(newCustomer);
+        System.out.println("Customer added successfully.");
+        return newCustomer;
+    }
+
+    public Boolean removeCustomer(String customerID) {
+        if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
+            System.out.println("Permission denied: Remove customer");
+            return false;
+        }
+
+        // Implement logic to find and remove customer by ID
+        System.out.println("Customer removed successfully.");
+        return true;
+    }
+
+    public List<Customer> getCustomers() {
+        if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
+            System.out.println("Permission denied: Get customer list");
+            return null;
+        }
+
+        return customers;
+    }
+
+    // technician features
+    public List<Appointment> checkAssignedAppointments(Technician technician) {
+        if (!hasCurrentUserPermission(User.Role.TECHNICIAN)) {
+            System.out.println("Permission denied: Check assigned appointments");
+        }
+
+        List<Appointment> technicianAppointments = new ArrayList<Appointment>();
+        String technicianId = technician.getUserId();
+        for (Appointment appointment : appointments) {
+            if (appointment.getTechnician().getUserId().equals(technicianId)) {
+                technicianAppointments.add(appointment);
+            }
+        }
+        System.out.println("Technician appointments accessed.");
+        return technicianAppointments;
+    }
+
+    public Boolean collectPayment(Appointment appointment, BigDecimal paymentAmount, Boolean paymentStatus) {
+        if (!hasCurrentUserPermission(User.Role.TECHNICIAN)) {
+            System.out.println("Permission denied: Collect payment");
+            return false;
+        }
+
+        // TODO
+        appointment.setPaymentAmount(paymentAmount);
+        appointment.setPaymentStatus(paymentStatus);
+        System.out.println("Payment collected for appointment.");
+        return true;
+    }
+
+    public void enterFeedback(Appointment appointment, String feedback) {
+        if (!(hasCurrentUserPermission(User.Role.TECHNICIAN) || hasCurrentUserPermission(User.Role.CENTRE_MANAGER))) {
+            System.out.println("Permission denied: Enter feedback");
+        }
+
+        appointment.setFeedback(feedback);
+        System.out.println("Feedback entered for appointment.");
     }
 }
