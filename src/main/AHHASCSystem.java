@@ -369,7 +369,7 @@ public class AHHASCSystem {
     }
 
     public void saveUsers() {
-        DataAccess.saveObjectsToCSV(users, "users.csv");
+        DataAccess.saveObjectsToCSV(users, userFilePath);
     }
 
     // appointment management
