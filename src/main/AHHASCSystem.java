@@ -131,6 +131,15 @@ class Appointment {
         this.paymentStatus = false;
     }
 
+    @Override
+    public Appointment clone() {
+        try {
+            return (Appointment) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
+
     public String getAppointmentId() {
         return appointmentId;
     }
@@ -442,7 +451,8 @@ public class AHHASCSystem {
         String technicianId = technician.getUserId();
         for (Appointment appointment : appointments) {
             if (appointment.getTechnician().getUserId().equals(technicianId)) {
-                technicianAppointments.add(appointment);
+                // returns a clone so that Technicians can't modify the original appointment
+                technicianAppointments.add(appointment.clone());
             }
         }
         System.out.println("Technician appointments accessed.");
