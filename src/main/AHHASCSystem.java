@@ -68,21 +68,6 @@ class Technician extends User {
         super(username, password, Role.TECHNICIAN);
     }
 
-    public void checkAppointments() {
-        // Display technician's upcoming appointments
-        // Read and display appointments from the file...
-    }
-
-    public void collectPayment(String appointmentId) {
-        // Collect payment for an appointment
-        // Update payment status in the file...
-    }
-
-    public void provideFeedback(String appointmentId, String feedback) {
-        // Provide feedback for an appointment
-        // Save feedback to the file...
-    }
-
     @Override
     public String toString() {
         return getUserId() + "," +
