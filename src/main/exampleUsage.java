@@ -1,7 +1,5 @@
 package main;
 
-import main.AHHASCSystem;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
