@@ -326,7 +326,7 @@ public class AHHASCSystem {
     }
 
     // user management
-    public User createUser(String username, String password, User.Role role) {
+    public User addUser(String username, String password, User.Role role) {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
             System.out.println("Permission denied: Get user list");
             return null;
@@ -373,7 +373,7 @@ public class AHHASCSystem {
     }
 
     // appointment management
-    public Appointment bookAppointment(Customer customer, Technician technician, LocalDate appointmentDate,
+    public Appointment addAppointment(Customer customer, Technician technician, LocalDate appointmentDate,
             BigDecimal paymentAmount) {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
             System.out.println("Permission denied: Book appointment");
@@ -385,7 +385,7 @@ public class AHHASCSystem {
         return appointment;
     }
 
-    public Boolean cancelAppointment(Appointment appointment) {
+    public Boolean removeAppointment(Appointment appointment) {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
             System.out.println("Permission denied: Cancel appointment");
             return false;
