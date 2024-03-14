@@ -15,8 +15,12 @@ public class exampleUsage {
 
         if (system.getCurrentUser().getRole().equals(User.Role.CENTRE_MANAGER)) {
             system.addAppointment(cu, t, LocalDate.now(), BigDecimal.valueOf(100));
+            system.getAppointments().forEach((k, v) -> {
+                System.out.println(v);
+            });
 
         } else if (system.getCurrentUser().getRole().equals(User.Role.TECHNICIAN)) {
+            // idk
         }
     }
 }
