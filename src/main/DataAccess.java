@@ -1,138 +1,95 @@
 package main;
 
 import java.io.*;
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
 import java.time.LocalDate;
 
 class DataAccess {
+    // TODO it appends insteads of overwriting
     static public <T extends BaseItem> void saveObjectsToCSV(Map<String, T> objects, String filePath) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-            for (Map.Entry<String, T> entry : objects.entrySet()) {
-                T object = entry.getValue();
-                writer.write(object.toString());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    static public <T extends BaseItem> void readObjectsFromCSV(Map<String, T> objects, String filePath) {
-        try (BufferedReader writer = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = writer.readLine()) != null) {
-                T object = parseObjectFromLine(line, (Class<T>) BaseItem.class);
-                objects.put(object.getId(), object);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // TODO test
-    private static <T> T parseObjectFromLine(String line, Class<T> objectType) {
-        String[] values = line.split(",");
-        try {
-            T object = objectType.getDeclaredConstructor().newInstance();
-            int index = 0;
-            for (Field field : objectType.getDeclaredFields()) {
-                field.setAccessible(true);
-                Class<?> fieldType = field.getType();
-                if (fieldType == String.class) {
-                    field.set(object, values[index]);
-                } else if (fieldType == int.class || fieldType == Integer.class) {
-                    field.set(object, Integer.parseInt(values[index]));
-                } else if (fieldType == boolean.class || fieldType == Boolean.class) {
-                    field.set(object, Boolean.parseBoolean(values[index]));
-                } else if (fieldType == LocalDate.class) {
-                    field.set(object, LocalDate.parse(values[index]));
-                } else if (fieldType == BigDecimal.class) {
-                    field.set(object, new BigDecimal(values[index]));
-                } else if (fieldType.isEnum()) {
-                    field.set(object, Enum.valueOf((Class<Enum>) fieldType, values[index]));
-                } else {
-                    throw new IllegalArgumentException("Unsupported field type: " + fieldType);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            if (!objects.isEmpty()) {
+                for (Map.Entry<String, T> entry : objects.entrySet()) {
+                    T object = entry.getValue();
+                    writer.write(object.toString());
+                    writer.newLine();
                 }
-                index++;
-            }
-
-            return object;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    static public <T extends BaseItem> void readObjectsFromCSV(Map<String, T> objects, String filePath,
-            Map<String, User> users, Map<String, Customer> customer) {
-        try (BufferedReader writer = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = writer.readLine()) != null) {
-                T object = parseObjectFromLine(line, (Class<T>) BaseItem.class, users, customer);
-                objects.put(object.getId(), object);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static <T> T parseObjectFromLine(String line, Class<T> objectType, Map<String, User> users,
-            Map<String, Customer> customers) {
-        String[] values = line.split(",");
-        try {
-            T object = objectType.getDeclaredConstructor().newInstance();
-            int index = 0;
-            for (Field field : objectType.getDeclaredFields()) {
-                field.setAccessible(true);
-                Class<?> fieldType = field.getType();
-                if (fieldType == String.class) {
-                    field.set(object, values[index]);
-                } else if (fieldType == int.class || fieldType == Integer.class) {
-                    field.set(object, Integer.parseInt(values[index]));
-                } else if (fieldType == boolean.class || fieldType == Boolean.class) {
-                    field.set(object, Boolean.parseBoolean(values[index]));
-                } else if (fieldType == LocalDate.class) {
-                    field.set(object, LocalDate.parse(values[index]));
-                } else if (fieldType == BigDecimal.class) {
-                    field.set(object, new BigDecimal(values[index]));
-                } else if (fieldType.isEnum()) {
-                    field.set(object, Enum.valueOf((Class<Enum>) fieldType, values[index]));
+    public static void readUserDataFromCSV(Map<String, User> users, String filePath, Class<User> userClass)
+            throws Exception {
+        BufferedReader reader = getReaderOrInitializeFile(filePath);
+        if (reader == null) {
+            return;
+        }
 
-                } else if (fieldType == Customer.class) {
-                    String customerId = values[index];
-                    Customer customer = null;
-                    if (customers.containsKey(customerId)) {
-                        customer = (Customer) customers.get(customerId);
-                    } else {
-                        throw new NestedObjectNotFoundException("Customer with id " + customerId + " not found");
-                    }
-                    field.set(object, customer);
-
-                } else if (fieldType == Technician.class) {
-                    String technicianId = values[index];
-                    Technician technician = null;
-                    if (users.containsKey(technicianId)) {
-                        technician = (Technician) users.get(technicianId);
-                    } else {
-                        throw new NestedObjectNotFoundException("Technician with id " + technicianId + " not found");
-                    }
-                    field.set(object, technician);
-
-                } else {
-                    throw new IllegalArgumentException("Unsupported field type: " + fieldType);
-                }
-                index++;
+        String line;
+        User user = null;
+        while ((line = reader.readLine()) != null) {
+            String[] values = line.split(",");
+            if (values[2].equals("CENTRE_MANAGER")) {
+                user = new CentreManager(values[0], values[1]);
+            } else if (values[2].equals("TECHNICIAN")) {
+                user = new Technician(values[0], values[1]);
             }
+            users.put(user.getUsername(), user);
+        }
+        reader.close();
+    }
 
-            return object;
+    public static void readCustomerDataFromCSV(Map<String, Customer> customers, String filePath,
+            Class<Customer> customerClass) throws Exception {
+        BufferedReader reader = getReaderOrInitializeFile(filePath);
+        if (reader == null) {
+            return;
+        }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] values = line.split(",", -1);
+            Customer customer = new Customer(values[0], values[1], values[2], values[3]);
+            customers.put(customer.getId(), customer);
+        }
+        reader.close();
+    }
+
+    public static void readAppointmentDataFromCSV(Map<String, Appointment> appointments, String filePath,
+            Map<String, User> users, Map<String, Customer> customers) throws Exception {
+        BufferedReader reader = getReaderOrInitializeFile(filePath);
+        if (reader == null) {
+            return;
+        }
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] values = line.split(",");
+            String id = values[0];
+            Customer customer = customers.get(values[1]);
+            Technician technician = (Technician) users.get(values[2]);
+            LocalDate creationDate = LocalDate.parse(values[3]);
+            LocalDate appointmentDate = LocalDate.parse(values[4]);
+            BigDecimal paymentAmount = new BigDecimal(values[5]);
+            boolean paymentStatus = Boolean.parseBoolean(values[6]);
+            String feedback = values[7];
+
+            Appointment appointment = new Appointment(id, customer, technician, creationDate, appointmentDate,
+                    paymentAmount, paymentStatus, feedback);
+            appointments.put(appointment.getId(), appointment);
+        }
+        reader.close();
+    }
+
+    public static BufferedReader getReaderOrInitializeFile(String filePath) throws IOException {
+        File file = new File(filePath);
+        if (file.exists()) {
+            return new BufferedReader(new FileReader(filePath));
+        } else {
+            file.createNewFile(); // Create the file if it doesn't exist
             return null;
         }
     }
