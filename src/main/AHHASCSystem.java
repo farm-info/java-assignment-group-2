@@ -188,7 +188,14 @@ class Appointment extends BaseItem {
     }
 
     public String toString() {
-        return getId() + "," + customer.getId() + "," + technician.getId() + "," + creationDate + "," + paymentStatus;
+        return getId()
+                + "," + customer.getId()
+                + "," + technician.getId()
+                + "," + creationDate
+                + "," + appointmentDate
+                + "," + paymentAmount
+                + "," + paymentStatus
+                + "," + feedback;
     }
 }
 
@@ -205,9 +212,13 @@ public class AHHASCSystem {
         users = new HashMap<>();
         customers = new HashMap<>();
         appointments = new HashMap<>();
-        DataAccess.readUserDataFromCSV(users, userFilePath, User.class);
-        DataAccess.readCustomerDataFromCSV(customers, customerFilePath, Customer.class);
-        DataAccess.readAppointmentDataFromCSV(appointments, appointmentFilePath, users, customers);
+        try {
+            DataAccess.readUserDataFromCSV(users, userFilePath, User.class);
+            DataAccess.readCustomerDataFromCSV(customers, customerFilePath, Customer.class);
+            DataAccess.readAppointmentDataFromCSV(appointments, appointmentFilePath, users, customers);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // permission checks
