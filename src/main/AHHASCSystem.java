@@ -69,7 +69,7 @@ class Technician extends User {
         return getId() + "," +
                 getUsername() + "," +
                 getPassword() + "," +
-                getRole() + ",";
+                getRole();
     }
 }
 
