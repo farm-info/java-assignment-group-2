@@ -81,6 +81,13 @@ class Customer extends BaseItem {
         this.contact_email = contact_email;
     }
 
+    public Customer(String Id, String name, String contactDetails, String contact_email) {
+        this.setId(Id);
+        this.name = name;
+        this.contact_number = contactDetails;
+        this.contact_email = contact_email;
+    }
+
     public String getName() {
         return name;
     }
@@ -115,6 +122,19 @@ class Appointment extends BaseItem {
         this.appointmentDate = appointmentDate;
         this.paymentAmount = paymentAmount;
         this.paymentStatus = false;
+    }
+
+    // overloaded constructor for reading from file
+    public Appointment(String Id, Customer customer, Technician technician, LocalDate creationDate,
+            LocalDate appointmentDate, BigDecimal paymentAmount, Boolean paymentStatus, String feedback) {
+        this.setId(Id);
+        this.customer = customer;
+        this.technician = technician;
+        this.creationDate = creationDate;
+        this.appointmentDate = appointmentDate;
+        this.paymentAmount = paymentAmount;
+        this.paymentStatus = paymentStatus;
+        this.feedback = feedback;
     }
 
     // currently unused
