@@ -113,6 +113,7 @@ class Appointment extends BaseItem {
         this.paymentStatus = false;
     }
 
+    // currently unused
     @Override
     public Appointment clone() {
         try {
@@ -122,6 +123,7 @@ class Appointment extends BaseItem {
         }
     }
 
+    // getter and setters
     public Customer getCustomer() {
         return customer;
     }
@@ -184,33 +186,6 @@ class Appointment extends BaseItem {
 
     public String toString() {
         return getId() + "," + customer.getId() + "," + technician.getId() + "," + creationDate + "," + paymentStatus;
-    }
-}
-
-class AppointmentManager {
-    private List<Appointment> appointments;
-
-    public AppointmentManager() {
-    }
-
-    public void addAppointment(Appointment appointment) {
-        appointments.add(appointment);
-    }
-
-    public void removeAppointment(Appointment appointment) {
-        appointments.remove(appointment);
-    }
-
-    public void updateAppointment(String appointmentID, String customerId, String technicianId, Boolean paymentStatus) {
-        // Update appointment data
-    }
-
-    public void displayAppointments() {
-        // Display appointments from the file...
-    }
-
-    public List<Appointment> getAppointments() {
-        return appointments;
     }
 }
 
