@@ -10,6 +10,7 @@ public class exampleUsage {
 
         system.login("manager1", "password123");
         CentreManager c = (CentreManager) system.addUser("manager2", "password123", User.Role.CENTRE_MANAGER);
+        // add functions are disabled because duplicte checking is broken
         // Technician t = (Technician) system.addUser("tech1", "password789",
         // User.Role.TECHNICIAN);
         // Customer cu = (Customer) system.addCustomer("customer idk", "", "");
