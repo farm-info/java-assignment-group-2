@@ -1,14 +1,23 @@
 package main;
 
-import java.io.*;
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
+
 import java.time.LocalDate;
 
-abstract class User {
-    private String userId;
-    private String username;
+abstract class BaseItem {
+    private String Id;
+
+    public BaseItem(String Id) {
+        this.Id = Id;
+    }
+
+    public String getId() {
+        return Id;
+    }
+}
+
+abstract class User extends BaseItem {
     private String password;
     private Role role;
 
@@ -18,26 +27,13 @@ abstract class User {
     }
 
     public User(String username, String password, Role role) {
-        this.userId = UUID.randomUUID().toString();
-        this.username = username;
+        super(username);
         this.password = password;
         this.role = role;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+        return getId();
     }
 
     public String getPassword() {
@@ -53,7 +49,7 @@ abstract class User {
     }
 
     public String toString() {
-        return userId + "," + username + "," + password + "," + role;
+        return getId() + "," + password + "," + role;
     }
 }
 
@@ -70,28 +66,23 @@ class Technician extends User {
 
     @Override
     public String toString() {
-        return getUserId() + "," +
+        return getId() + "," +
                 getUsername() + "," +
                 getPassword() + "," +
                 getRole() + ",";
     }
 }
 
-class Customer {
-    private String customerID;
+class Customer extends BaseItem {
     private String name;
     private String contact_number;
     private String contact_email;
 
     public Customer(String name, String contactDetails, String contact_email) {
-        this.customerID = UUID.randomUUID().toString();
+        super(UUID.randomUUID().toString());
         this.name = name;
         this.contact_number = contactDetails;
         this.contact_email = contact_email;
-    }
-
-    public String getCustomerID() {
-        return customerID;
     }
 
     public String getName() {
@@ -107,12 +98,11 @@ class Customer {
     }
 
     public String toString() {
-        return customerID + "," + name + "," + contact_number + "," + contact_email;
+        return getId() + "," + name + "," + contact_number + "," + contact_email;
     }
 }
 
-class Appointment {
-    private String appointmentId;
+class Appointment extends BaseItem {
     private Customer customer;
     private Technician technician;
     private LocalDate creationDate;
@@ -122,7 +112,7 @@ class Appointment {
     private String feedback;
 
     public Appointment(Customer customer, Technician technician, LocalDate appointmentDate, BigDecimal paymentAmount) {
-        this.appointmentId = UUID.randomUUID().toString();
+        super(UUID.randomUUID().toString());
         this.customer = customer;
         this.technician = technician;
         this.creationDate = LocalDate.now();
@@ -138,10 +128,6 @@ class Appointment {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
-    }
-
-    public String getAppointmentId() {
-        return appointmentId;
     }
 
     public Customer getCustomer() {
@@ -205,7 +191,7 @@ class Appointment {
     }
 
     public String toString() {
-        return appointmentId + "," + customer + "," + technician + "," + creationDate + "," + paymentStatus;
+        return getId() + "," + customer.getId() + "," + technician.getId() + "," + creationDate + "," + paymentStatus;
     }
 }
 
@@ -236,72 +222,23 @@ class AppointmentManager {
     }
 }
 
-class DataAccess {
-    static public <T> void saveObjectsToCSV(List<T> objects, String filePath) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-            for (T object : objects) {
-                writer.write(object.toString());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    static public <T> void readObjectsFromCSV(List<T> objects, String filePath, Class<T> clazz) {
-        try (BufferedReader writer = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = writer.readLine()) != null) {
-                T object = parseObjectFromLine(line, clazz);
-                objects.add(object);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // TODO test
-    private static <T> T parseObjectFromLine(String line, Class<T> objectType) {
-        String[] values = line.split(",");
-        try {
-            T object = objectType.getDeclaredConstructor().newInstance();
-            int index = 0;
-            for (Field field : objectType.getDeclaredFields()) {
-                field.setAccessible(true);
-                Class<?> fieldType = field.getType();
-                if (fieldType == String.class) {
-                    field.set(object, values[index]);
-                } else if (fieldType == int.class || fieldType == Integer.class) {
-                    field.set(object, Integer.parseInt(values[index]));
-                } else if (fieldType == boolean.class || fieldType == Boolean.class) {
-                    field.set(object, Boolean.parseBoolean(values[index]));
-                }
-                index++;
-            }
-            return object;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-}
-
 public class AHHASCSystem {
-    private List<User> users;
-    private List<Customer> customers;
-    private List<Appointment> appointments;
+    private Map<String, User> users;
+    private Map<String, Customer> customers;
+    private Map<String, Appointment> appointments;
     private String userFilePath = "users.csv";
     private String customerFilePath = "customers.csv";
     private String appointmentFilePath = "appointments.csv";
     private User currentUser;
 
     public AHHASCSystem() {
-        users = new ArrayList<>();
-        customers = new ArrayList<>();
-        appointments = new ArrayList<>();
-        DataAccess.readObjectsFromCSV(users, userFilePath, User.class);
-        DataAccess.readObjectsFromCSV(customers, customerFilePath, Customer.class);
-        DataAccess.readObjectsFromCSV(appointments, appointmentFilePath, Appointment.class);
+        users = new HashMap<>();
+        customers = new HashMap<>();
+        appointments = new HashMap<>();
+        // TODO conversion/accept BaseItem
+        DataAccess.readObjectsFromCSV(users, userFilePath);
+        DataAccess.readObjectsFromCSV(customers, customerFilePath);
+        DataAccess.readObjectsFromCSV(appointments, appointmentFilePath, users, customers);
     }
 
     // permission checks
@@ -311,12 +248,15 @@ public class AHHASCSystem {
 
     // account management
     public Boolean login(String username, String password) {
-        for (User user : users) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+        if (users.containsKey(username)) {
+            User user = users.get(username);
+            if (user.getPassword().equals(password)) {
                 currentUser = user;
                 System.out.println("Login successful.");
                 return true;
             }
+        } else {
+            System.out.println("Username not found.");
         }
         return false;
     }
@@ -332,7 +272,7 @@ public class AHHASCSystem {
             return null;
         }
 
-        boolean usernameExists = users.stream().anyMatch(user -> user.getUsername().equals(username));
+        boolean usernameExists = users.containsKey(username);
         if (usernameExists) {
             System.out.println("Username already exists.");
             return null;
@@ -342,12 +282,12 @@ public class AHHASCSystem {
 
         if (role == User.Role.CENTRE_MANAGER) {
             newUser = new CentreManager(username, password);
-            users.add(newUser);
+            users.put(newUser.getId(), newUser);
             System.out.println("Centre Manager created successfully.");
 
         } else if (role == User.Role.TECHNICIAN) {
             newUser = new Technician(username, password);
-            users.add(newUser);
+            users.put(newUser.getId(), newUser);
             System.out.println("Technician created successfully.");
 
         } else {
@@ -359,7 +299,7 @@ public class AHHASCSystem {
         return newUser;
     }
 
-    public List<User> getUsers() {
+    public Map<String, User> getUsers() {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
             System.out.println("Permission denied: Get user list");
             return null;
@@ -369,6 +309,7 @@ public class AHHASCSystem {
     }
 
     public void saveUsers() {
+        // TODO change this
         DataAccess.saveObjectsToCSV(users, userFilePath);
     }
 
@@ -381,7 +322,7 @@ public class AHHASCSystem {
         }
 
         Appointment appointment = new Appointment(customer, technician, appointmentDate, paymentAmount);
-        appointments.add(appointment);
+        appointments.put(appointment.getId(), appointment);
         return appointment;
     }
 
@@ -391,15 +332,16 @@ public class AHHASCSystem {
             return false;
         }
 
-        appointments.remove(appointment);
+        // TODO is this correct?
+        appointments.remove(appointment.getId());
         return true;
     }
 
     // there's nothing to ensure anyone else can edit appointments, like,
     // technicians can edit stuff from their list, which is a big no
-    // TODO implement setters for them
+    // WONTFIX implement setters for them?
 
-    public List<Appointment> getTechnicianAppointments() {
+    public Map<String, Appointment> getAppointments() {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
             System.out.println("Permission denied: Cancel appointment");
             return null;
@@ -416,7 +358,7 @@ public class AHHASCSystem {
         }
 
         Customer newCustomer = new Customer(name, contactDetails, contactEmail);
-        customers.add(newCustomer);
+        customers.put(newCustomer.getId(), newCustomer);
         System.out.println("Customer added successfully.");
         return newCustomer;
     }
@@ -432,7 +374,7 @@ public class AHHASCSystem {
         return true;
     }
 
-    public List<Customer> getCustomers() {
+    public Map<String, Customer> getCustomers() {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
             System.out.println("Permission denied: Get customer list");
             return null;
@@ -442,17 +384,17 @@ public class AHHASCSystem {
     }
 
     // technician features
-    public List<Appointment> checkAssignedAppointments(Technician technician) {
+    public Map<String, Appointment> checkAssignedAppointments(Technician technician) {
         if (!hasCurrentUserPermission(User.Role.TECHNICIAN)) {
             System.out.println("Permission denied: Check assigned appointments");
         }
 
-        List<Appointment> technicianAppointments = new ArrayList<Appointment>();
-        String technicianId = technician.getUserId();
-        for (Appointment appointment : appointments) {
-            if (appointment.getTechnician().getUserId().equals(technicianId)) {
-                // returns a clone so that Technicians can't modify the original appointment
-                technicianAppointments.add(appointment.clone());
+        Map<String, Appointment> technicianAppointments = new HashMap<String, Appointment>();
+        String technicianId = technician.getId();
+        for (Map.Entry<String, Appointment> entry : appointments.entrySet()) {
+            Appointment appointment = entry.getValue();
+            if (appointment.getTechnician().getId().equals(technicianId)) {
+                technicianAppointments.put(appointment.getId(), appointment);
             }
         }
         System.out.println("Technician appointments accessed.");
@@ -465,7 +407,6 @@ public class AHHASCSystem {
             return false;
         }
 
-        // TODO
         appointment.setPaymentAmount(paymentAmount);
         appointment.setPaymentStatus(paymentStatus);
         System.out.println("Payment collected for appointment.");
