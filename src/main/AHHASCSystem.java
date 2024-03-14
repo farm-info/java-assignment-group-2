@@ -235,7 +235,6 @@ public class AHHASCSystem {
         users = new HashMap<>();
         customers = new HashMap<>();
         appointments = new HashMap<>();
-        // TODO conversion/accept BaseItem
         DataAccess.readObjectsFromCSV(users, userFilePath);
         DataAccess.readObjectsFromCSV(customers, customerFilePath);
         DataAccess.readObjectsFromCSV(appointments, appointmentFilePath, users, customers);
