@@ -10,11 +10,12 @@ public class exampleUsage {
 
         system.login("manager1", "password123");
         CentreManager c = (CentreManager) system.addUser("manager2", "password123", User.Role.CENTRE_MANAGER);
-        Technician t = (Technician) system.addUser("tech1", "password789", User.Role.TECHNICIAN);
-        Customer cu = (Customer) system.addCustomer("customer idk", "", "");
+        // Technician t = (Technician) system.addUser("tech1", "password789",
+        // User.Role.TECHNICIAN);
+        // Customer cu = (Customer) system.addCustomer("customer idk", "", "");
 
         if (system.getCurrentUser().getRole().equals(User.Role.CENTRE_MANAGER)) {
-            system.addAppointment(cu, t, LocalDate.now(), BigDecimal.valueOf(100));
+            // system.addAppointment(cu, t, LocalDate.now(), BigDecimal.valueOf(100));
             system.getAppointments().forEach((k, v) -> {
                 System.out.println(v);
             });
@@ -22,5 +23,6 @@ public class exampleUsage {
         } else if (system.getCurrentUser().getRole().equals(User.Role.TECHNICIAN)) {
             // idk
         }
+        system.save();
     }
 }
