@@ -7,9 +7,10 @@ import java.util.*;
 import java.time.LocalDate;
 
 class DataAccess {
-    static public <T> void saveObjectsToCSV(List<T> objects, String filePath) {
+    static public <T extends BaseItem> void saveObjectsToCSV(Map<String, T> objects, String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-            for (T object : objects) {
+            for (Map.Entry<String, T> entry : objects.entrySet()) {
+                T object = entry.getValue();
                 writer.write(object.toString());
                 writer.newLine();
             }
