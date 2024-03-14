@@ -263,7 +263,7 @@ public class AHHASCSystem {
             throw new IllegalArgumentException("Invalid user type.");
         }
 
-        saveUsers();
+        save();
         System.out.println("User created successfully.");
         return newUser;
     }
@@ -277,9 +277,11 @@ public class AHHASCSystem {
         return users;
     }
 
-    public void saveUsers() {
+    public void save() {
         // TODO change this
         DataAccess.saveObjectsToCSV(users, userFilePath);
+        DataAccess.saveObjectsToCSV(customers, customerFilePath);
+        DataAccess.saveObjectsToCSV(appointments, appointmentFilePath);
     }
 
     // appointment management
