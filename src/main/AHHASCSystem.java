@@ -6,14 +6,18 @@ import java.util.*;
 import java.time.LocalDate;
 
 abstract class BaseItem {
-    private String Id;
+    protected String Id;
 
-    public BaseItem(String Id) {
-        this.Id = Id;
+    public BaseItem() {
+        this.Id = UUID.randomUUID().toString();
     }
 
     public String getId() {
         return Id;
+    }
+
+    protected void setId(String id) {
+        this.Id = id;
     }
 }
 
@@ -27,7 +31,7 @@ abstract class User extends BaseItem {
     }
 
     public User(String username, String password, Role role) {
-        super(username);
+        setId(username);
         this.password = password;
         this.role = role;
     }
@@ -71,7 +75,6 @@ class Customer extends BaseItem {
     private String contact_email;
 
     public Customer(String name, String contactDetails, String contact_email) {
-        super(UUID.randomUUID().toString());
         this.name = name;
         this.contact_number = contactDetails;
         this.contact_email = contact_email;
@@ -95,6 +98,7 @@ class Customer extends BaseItem {
 }
 
 class Appointment extends BaseItem {
+    // TODO migrate to storing IDs and utilizing hashmaps
     private Customer customer;
     private Technician technician;
     private LocalDate creationDate;
@@ -104,7 +108,6 @@ class Appointment extends BaseItem {
     private String feedback;
 
     public Appointment(Customer customer, Technician technician, LocalDate appointmentDate, BigDecimal paymentAmount) {
-        super(UUID.randomUUID().toString());
         this.customer = customer;
         this.technician = technician;
         this.creationDate = LocalDate.now();
@@ -202,9 +205,9 @@ public class AHHASCSystem {
         users = new HashMap<>();
         customers = new HashMap<>();
         appointments = new HashMap<>();
-        DataAccess.readObjectsFromCSV(users, userFilePath);
-        DataAccess.readObjectsFromCSV(customers, customerFilePath);
-        DataAccess.readObjectsFromCSV(appointments, appointmentFilePath, users, customers);
+        DataAccess.readUserDataFromCSV(users, userFilePath, User.class);
+        DataAccess.readCustomerDataFromCSV(customers, customerFilePath, Customer.class);
+        DataAccess.readAppointmentDataFromCSV(appointments, appointmentFilePath, users, customers);
     }
 
     // permission checks
