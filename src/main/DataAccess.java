@@ -7,7 +7,6 @@ import java.util.*;
 import java.time.LocalDate;
 
 class DataAccess {
-    // TODO modify toString to support nested objects
     static public <T> void saveObjectsToCSV(List<T> objects, String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
             for (T object : objects) {
@@ -31,8 +30,6 @@ class DataAccess {
             e.printStackTrace();
         }
     }
-
-    // Map<String, Object> parsedObjects
 
     // TODO test
     private static <T> T parseObjectFromLine(String line, Class<T> objectType) {
