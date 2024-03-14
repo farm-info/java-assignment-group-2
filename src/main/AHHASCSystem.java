@@ -332,7 +332,6 @@ public class AHHASCSystem {
             return false;
         }
 
-        // TODO is this correct?
         appointments.remove(appointment.getId());
         return true;
     }
