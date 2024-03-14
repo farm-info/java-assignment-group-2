@@ -63,14 +63,6 @@ class Technician extends User {
     public Technician(String username, String password) {
         super(username, password, Role.TECHNICIAN);
     }
-
-    @Override
-    public String toString() {
-        return getId() + "," +
-                getUsername() + "," +
-                getPassword() + "," +
-                getRole();
-    }
 }
 
 class Customer extends BaseItem {
