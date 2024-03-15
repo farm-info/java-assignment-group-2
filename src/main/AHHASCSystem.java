@@ -9,7 +9,6 @@ abstract class BaseItem {
     protected String Id;
 
     public BaseItem() {
-        // FIXME
         this.Id = UUID.randomUUID().toString();
     }
 
