@@ -75,9 +75,9 @@ class Customer extends BaseItem {
     private String contact_number;
     private String contact_email;
 
-    public Customer(String name, String contactDetails, String contact_email) {
+    public Customer(String name, String contactNumber, String contact_email) {
         this.name = name;
-        this.contact_number = contactDetails;
+        this.contact_number = contactNumber;
         this.contact_email = contact_email;
     }
 
