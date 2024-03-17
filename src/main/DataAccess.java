@@ -6,7 +6,7 @@ import java.util.*;
 import java.time.LocalDate;
 
 class DataAccess {
-    // TODO it appends insteads of overwriting
+    // FIXME it appends insteads of overwriting
     static public <T extends BaseItem> void saveObjectsToCSV(Map<String, T> objects, String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             if (!objects.isEmpty()) {
@@ -59,7 +59,7 @@ class DataAccess {
     }
 
     public static void readAppointmentDataFromCSV(Map<String, Appointment> appointments, String filePath,
-            Map<String, User> users, Map<String, Customer> customers) throws IOException {
+            Map<String, User> users, Map<String, Customer> customers) throws IOException, ItemNotFoundException {
         BufferedReader reader = getReaderOrInitializeFile(filePath);
         if (reader == null) {
             return;
@@ -78,10 +78,10 @@ class DataAccess {
             String feedback = values[7];
 
             if (customer == null) {
-                throw new IllegalArgumentException("No matching customer found for ID: " + values[1]);
+                throw new ItemNotFoundException(values[1], "customer");
             }
             if (technician == null) {
-                throw new IllegalArgumentException("No matching technician found for ID: " + values[2]);
+                throw new ItemNotFoundException(values[2], "technician");
             }
 
             Appointment appointment = new Appointment(id, customer, technician, creationDate, appointmentDate,
@@ -99,5 +99,11 @@ class DataAccess {
             file.createNewFile(); // Create the file if it doesn't exist
             return null;
         }
+    }
+}
+
+class ItemNotFoundException extends Exception {
+    public ItemNotFoundException(String Id, String itemType) {
+        super("No matching " + itemType + " found for ID: " + Id);
     }
 }

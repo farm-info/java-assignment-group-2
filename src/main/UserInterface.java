@@ -6,6 +6,7 @@ import javax.swing.table.TableModel;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -21,8 +22,21 @@ public class UserInterface {
     private AHHASCSystem system;
 
     public UserInterface() {
-        system = new AHHASCSystem();
+        initializeSystem();
         createAndShowUI();
+    }
+
+    private void initializeSystem() {
+        try {
+            system = new AHHASCSystem();
+        } catch (ItemNotFoundException | IOException e) {
+            JOptionPane.showMessageDialog(
+                    frame,
+                    "Error initializing system. Data may be corrupted.\n" + e,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
     }
 
     private void createAndShowUI() {

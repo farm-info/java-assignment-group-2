@@ -1,12 +1,19 @@
 package main;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class exampleUsage {
     public static void main(String[] args) {
         // Example usage of the AHHASC system
-        AHHASCSystem system = new AHHASCSystem();
+        AHHASCSystem system;
+        try {
+            system = new AHHASCSystem();
+        } catch (IOException | ItemNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
 
         system.login("manager1", "password123");
         CentreManager c = (CentreManager) system.addUser("manager2", "password123", User.Role.CENTRE_MANAGER);

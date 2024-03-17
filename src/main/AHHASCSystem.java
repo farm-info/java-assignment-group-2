@@ -1,5 +1,6 @@
 package main;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -230,7 +231,7 @@ public class AHHASCSystem {
     private String appointmentFilePath = "appointments.csv";
     private User currentUser;
 
-    public AHHASCSystem() {
+    public AHHASCSystem() throws IOException, ItemNotFoundException {
         users = new HashMap<>();
         customers = new HashMap<>();
         appointments = new HashMap<>();
@@ -240,7 +241,10 @@ public class AHHASCSystem {
             DataAccess.readAppointmentDataFromCSV(appointments, appointmentFilePath, users, customers);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Failed to read data from file.");
+            throw e;
+        } catch (ItemNotFoundException e) {
+            e.printStackTrace();
+            throw e;
         }
     }
 
