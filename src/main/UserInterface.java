@@ -291,12 +291,7 @@ class AppointmentsTableModel extends AbstractTableModel {
                 return appointment.getPaymentAmount();
             case 7:
                 return appointment.getFeedback();
-            case 8:
-                // button to view appointment
-                JButton viewButton = new JButton("View");
-                viewButton.addActionListener(e -> {
-                    // TODO change page
-                });
+            // TODO button to view appointment
             default:
                 return null;
         }
@@ -320,6 +315,8 @@ class AppointmentsTableModel extends AbstractTableModel {
                 return "Payment Amount";
             case 7:
                 return "Feedback";
+            case 8:
+                return "View Appointment";
             default:
                 return null;
         }
