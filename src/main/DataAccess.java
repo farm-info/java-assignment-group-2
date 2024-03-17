@@ -77,6 +77,13 @@ class DataAccess {
             boolean paymentStatus = Boolean.parseBoolean(values[6]);
             String feedback = values[7];
 
+            if (customer == null) {
+                throw new IllegalArgumentException("No matching customer found for ID: " + values[1]);
+            }
+            if (technician == null) {
+                throw new IllegalArgumentException("No matching technician found for ID: " + values[2]);
+            }
+
             Appointment appointment = new Appointment(id, customer, technician, creationDate, appointmentDate,
                     paymentAmount, paymentStatus, feedback);
             appointments.put(appointment.getId(), appointment);
