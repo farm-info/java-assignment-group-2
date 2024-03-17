@@ -99,8 +99,12 @@ class LoginPanel {
                     userInterface.showPanel("centreManager");
                 } else if (userRole == User.Role.TECHNICIAN) {
                     userInterface.showPanel("technician");
-                    // TODO update table
                 }
+
+                // clear username and password fields
+                usernameField.setText("");
+                passwordField.setText("");
+
             } else {
                 JOptionPane.showMessageDialog(frame, "Login failed: Invalid username or password", "Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -150,6 +154,11 @@ class RegisterPanel {
                 JOptionPane.showMessageDialog(frame, "Registration successful!", "Success",
                         JOptionPane.INFORMATION_MESSAGE);
                 userInterface.showPanel("login");
+
+                // clear username and password fields
+                usernameField.setText("");
+                passwordField.setText("");
+
             } else {
                 JOptionPane.showMessageDialog(frame, "Registration failed: ", "Error",
                         JOptionPane.ERROR_MESSAGE);
