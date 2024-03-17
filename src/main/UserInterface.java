@@ -185,7 +185,8 @@ class TechnicianPanel {
         panel.add(enterFeedbackButton);
 
         // Logout button
-        // TODO make it reussable?
+        // TODO make it reusable
+        // TODO clear username and password fields
         JButton logoutButton = new JButton("Logout");
         logoutButton.addActionListener(e -> {
             system.logout();
