@@ -3,6 +3,8 @@ package main;
 import java.math.BigDecimal;
 import java.util.*;
 
+import javax.management.relation.Role;
+
 import java.time.LocalDate;
 
 abstract class BaseItem {
@@ -247,18 +249,18 @@ public class AHHASCSystem {
     }
 
     // account management
-    public Boolean login(String username, String password) {
+    public User.Role login(String username, String password) {
         if (users.containsKey(username)) {
             User user = users.get(username);
             if (user.getPassword().equals(password)) {
                 currentUser = user;
                 System.out.println("Login successful.");
-                return true;
+                return user.getRole();
             }
         } else {
             System.out.println("Username not found.");
         }
-        return false;
+        return null;
     }
 
     public User getCurrentUser() {
