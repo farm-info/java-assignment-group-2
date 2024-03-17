@@ -395,6 +395,7 @@ public class AHHASCSystem {
     public Map<String, Appointment> getAssignedAppointments(Technician technician) {
         if (!hasCurrentUserPermission(User.Role.TECHNICIAN)) {
             System.out.println("Permission denied: Check assigned appointments");
+            return null;
         }
 
         Map<String, Appointment> technicianAppointments = new HashMap<String, Appointment>();
@@ -424,6 +425,7 @@ public class AHHASCSystem {
     public void setAppointmentFeedback(Appointment appointment, String feedback) {
         if (!(hasCurrentUserPermission(User.Role.TECHNICIAN) || hasCurrentUserPermission(User.Role.CENTRE_MANAGER))) {
             System.out.println("Permission denied: Enter feedback");
+            return;
         }
 
         appointment.setFeedback(feedback);
