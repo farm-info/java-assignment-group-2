@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import main.data_access.ItemNotFoundException;
+import main.system.*;
+
 public class exampleUsage {
     public static void main(String[] args) {
         // Example usage of the AHHASC system

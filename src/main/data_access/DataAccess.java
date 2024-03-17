@@ -1,11 +1,14 @@
-package main;
+package main.data_access;
 
 import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
+
+import main.system.*;
+
 import java.time.LocalDate;
 
-class DataAccess {
+public class DataAccess {
     // FIXME it appends insteads of overwriting
     static public <T extends BaseItem> void saveObjectsToCSV(Map<String, T> objects, String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
@@ -99,11 +102,5 @@ class DataAccess {
             file.createNewFile(); // Create the file if it doesn't exist
             return null;
         }
-    }
-}
-
-class ItemNotFoundException extends Exception {
-    public ItemNotFoundException(String Id, String itemType) {
-        super("No matching " + itemType + " found for ID: " + Id);
     }
 }
