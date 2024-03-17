@@ -188,6 +188,7 @@ class TechnicianPanel {
         // TODO make it reussable?
         JButton logoutButton = new JButton("Logout");
         logoutButton.addActionListener(e -> {
+            system.logout();
             userInterface.showPanel("login");
         });
         panel.add(logoutButton);

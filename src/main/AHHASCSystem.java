@@ -267,6 +267,11 @@ public class AHHASCSystem {
         return currentUser;
     }
 
+    public void logout() {
+        currentUser = null;
+        System.out.println("Logged out.");
+    }
+
     // user management
     public User addUser(String username, String password, User.Role role) {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
