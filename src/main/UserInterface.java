@@ -103,9 +103,6 @@ class LoginPanel {
 
 class RegisterPanel {
     private JPanel panel;
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JButton registerButton;
 
     public RegisterPanel(UserInterface userInterface, AHHASCSystem system, JFrame frame) {
         panel = new JPanel();
@@ -113,17 +110,17 @@ class RegisterPanel {
 
         // Registration fields
         JLabel registerUsernameLabel = new JLabel("Username:");
-        usernameField = new JTextField(20);
+        JTextField usernameField = new JTextField(20);
         panel.add(registerUsernameLabel);
         panel.add(usernameField);
 
         JLabel registerPasswordLabel = new JLabel("Password:");
-        passwordField = new JPasswordField(20);
+        JPasswordField passwordField = new JPasswordField(20);
         panel.add(registerPasswordLabel);
         panel.add(passwordField);
 
         // Register button
-        registerButton = new JButton("Register");
+        JButton registerButton = new JButton("Register");
         registerButton.addActionListener(e -> {
             String username = usernameField.getText();
             String password = String.valueOf(passwordField.getPassword());
