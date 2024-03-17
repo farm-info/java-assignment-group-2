@@ -1,14 +1,22 @@
 package main;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
+import java.util.List;
 
 public class UserInterface {
     private JFrame frame;
     private CardLayout cardLayout;
 
     private JPanel centerPanel;
+    private LoginPanel loginPanel;
+    private RegisterPanel registerPanel;
+    private TechnicianPanel technicianPanel;
 
     private AHHASCSystem system;
 
@@ -26,9 +34,9 @@ public class UserInterface {
         centerPanel = new JPanel();
         centerPanel.setLayout(cardLayout);
 
-        LoginPanel loginPanel = new LoginPanel(this, system, frame);
-        RegisterPanel registerPanel = new RegisterPanel(this, system, frame);
-        TechnicianPanel technicianPanel = new TechnicianPanel(this, system, frame);
+        loginPanel = new LoginPanel(this, system, frame);
+        registerPanel = new RegisterPanel(this, system, frame);
+        technicianPanel = new TechnicianPanel(this, system, frame);
         centerPanel.add(loginPanel.getPanel(), "login");
         centerPanel.add(registerPanel.getPanel(), "register");
         centerPanel.add(technicianPanel.getPanel(), "technician");
@@ -39,6 +47,9 @@ public class UserInterface {
     }
 
     public void showPanel(String panelName) {
+        if (panelName.equals("technician")) {
+            technicianPanel.updateAppointmentsTable();
+        }
         cardLayout.show(centerPanel, panelName);
         frame.pack();
         frame.setVisible(true);
@@ -86,6 +97,7 @@ class LoginPanel {
                     userInterface.showPanel("centreManager");
                 } else if (userRole == User.Role.TECHNICIAN) {
                     userInterface.showPanel("technician");
+                    // TODO update table
                 }
             } else {
                 JOptionPane.showMessageDialog(frame, "Login failed: Invalid username or password", "Error",
@@ -156,33 +168,45 @@ class RegisterPanel {
     }
 }
 
+/*
+ * technicianPanel: a table of all appointments, uses getAssignedAppointments()
+ * - each row is an appointment and contains a button to view the appointment
+ * each appointment has a page, which can use:
+ * - collectPayment() from customers
+ * - enterFeedback() for customers to enter feedback after each appointment
+ * - a back button to return to the table
+ */
 class TechnicianPanel {
     private JPanel panel;
+    private AHHASCSystem system;
+    private Map<String, Appointment> assignedAppointments;
+    private AppointmentsTableModel appointmentsTableModel;
 
     public TechnicianPanel(UserInterface userInterface, AHHASCSystem system, JFrame frame) {
+        this.system = system;
+
         panel = new JPanel();
-        panel.setLayout(new FlowLayout());
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        // Check assigned appointments
-        JButton checkAssignedAppointmentsButton = new JButton("Check assigned appointments");
-        checkAssignedAppointmentsButton.addActionListener(e -> {
-            // TODO
-        });
-        panel.add(checkAssignedAppointmentsButton);
+        // Title
+        JPanel titlePanel = new JPanel();
+        JLabel title = new JLabel("Your appointments");
+        titlePanel.add(title);
 
-        // Collect payment
-        JButton collectPaymentButton = new JButton("Collect payment");
-        collectPaymentButton.addActionListener(e -> {
-            // TODO
+        // Update table button
+        JButton updateButton = new JButton("Update");
+        updateButton.addActionListener(e -> {
+            updateAppointmentsTable();
         });
-        panel.add(collectPaymentButton);
+        panel.add(titlePanel);
 
-        // Enter feedback
-        JButton enterFeedbackButton = new JButton("Enter feedback");
-        enterFeedbackButton.addActionListener(e -> {
-            // TODO
-        });
-        panel.add(enterFeedbackButton);
+        // Table of appointments
+        JTable appointmentsTable = new JTable();
+        appointmentsTableModel = new AppointmentsTableModel();
+        appointmentsTable.setModel(appointmentsTableModel);
+        JScrollPane scrollPane = new JScrollPane(appointmentsTable);
+        appointmentsTable.setFillsViewportHeight(true);
+        panel.add(scrollPane);
 
         // Logout button
         // TODO make it reusable
@@ -195,7 +219,87 @@ class TechnicianPanel {
         panel.add(logoutButton);
     }
 
+    public void updateAppointmentsTable() {
+        assignedAppointments = system.getAssignedAppointments((Technician) system.getCurrentUser());
+        appointmentsTableModel.setAppointments(new ArrayList<>(assignedAppointments.values()));
+    }
+
     public JPanel getPanel() {
         return panel;
+    }
+}
+
+class AppointmentsTableModel extends AbstractTableModel {
+    private List<Appointment> appointments = new ArrayList<>();
+
+    @Override
+    public int getRowCount() {
+        return appointments.size();
+    }
+
+    @Override
+    public int getColumnCount() {
+        return 8;
+    }
+
+    public Object getValueAt(int row, int column) {
+        Appointment appointment = appointments.get(row);
+        switch (column) {
+            case 0:
+                return appointment.getCustomer().getName();
+            case 1:
+                return appointment.getCustomer().getContactEmail();
+            case 2:
+                return appointment.getCustomer().getContactNumber();
+            case 3:
+                return appointment.getAppointmentDate();
+            case 4:
+                return appointment.getCreationDate();
+            case 5:
+                return appointment.getPaymentStatus();
+            case 6:
+                return appointment.getPaymentAmount();
+            case 7:
+                return appointment.getFeedback();
+            case 8:
+                // button to view appointment
+                JButton viewButton = new JButton("View");
+                viewButton.addActionListener(e -> {
+                    // TODO change page
+                });
+            default:
+                return null;
+        }
+    }
+
+    public String getColumnName(int column) {
+        switch (column) {
+            case 0:
+                return "Customer Name";
+            case 1:
+                return "Customer Email";
+            case 2:
+                return "Customer Phone";
+            case 3:
+                return "Appointment Date";
+            case 4:
+                return "Creation Date";
+            case 5:
+                return "Payment Status";
+            case 6:
+                return "Payment Amount";
+            case 7:
+                return "Feedback";
+            default:
+                return null;
+        }
+    }
+
+    public boolean isCellEditable(int row, int column) {
+        return false;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }
