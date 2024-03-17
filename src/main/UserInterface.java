@@ -233,6 +233,7 @@ class TechnicianPanel {
         updateButton.addActionListener(e -> {
             updateAppointmentsTable();
         });
+        titlePanel.add(updateButton);
         panel.add(titlePanel);
 
         // Table of appointments
