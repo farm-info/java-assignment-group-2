@@ -392,7 +392,7 @@ public class AHHASCSystem {
     }
 
     // technician features
-    public Map<String, Appointment> checkAssignedAppointments(Technician technician) {
+    public Map<String, Appointment> getAssignedAppointments(Technician technician) {
         if (!hasCurrentUserPermission(User.Role.TECHNICIAN)) {
             System.out.println("Permission denied: Check assigned appointments");
         }
@@ -409,7 +409,7 @@ public class AHHASCSystem {
         return technicianAppointments;
     }
 
-    public Boolean collectPayment(Appointment appointment, BigDecimal paymentAmount, Boolean paymentStatus) {
+    public Boolean setAppointmentPayment(Appointment appointment, BigDecimal paymentAmount, Boolean paymentStatus) {
         if (!hasCurrentUserPermission(User.Role.TECHNICIAN)) {
             System.out.println("Permission denied: Collect payment");
             return false;
@@ -421,7 +421,7 @@ public class AHHASCSystem {
         return true;
     }
 
-    public void enterFeedback(Appointment appointment, String feedback) {
+    public void setAppointmentFeedback(Appointment appointment, String feedback) {
         if (!(hasCurrentUserPermission(User.Role.TECHNICIAN) || hasCurrentUserPermission(User.Role.CENTRE_MANAGER))) {
             System.out.println("Permission denied: Enter feedback");
         }
