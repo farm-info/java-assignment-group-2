@@ -89,6 +89,7 @@ class LoginPanel {
         loginButton.addActionListener(e -> {
             String username = usernameField.getText();
             String password = String.valueOf(passwordField.getPassword());
+
             User.Role userRole = system.login(username, password);
             if (userRole != null) {
                 JOptionPane.showMessageDialog(frame, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
