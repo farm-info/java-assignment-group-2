@@ -224,16 +224,16 @@ class TechnicianPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         // Title
-        JPanel titlePanel = new JPanel();
+        JPanel titlePanel = new JPanel(new BorderLayout());
         JLabel title = new JLabel("Your appointments");
-        titlePanel.add(title);
+        titlePanel.add(title, BorderLayout.WEST);
 
         // Update table button
         JButton updateButton = new JButton("Update");
         updateButton.addActionListener(e -> {
             updateAppointmentsTable();
         });
-        titlePanel.add(updateButton);
+        titlePanel.add(updateButton, BorderLayout.EAST);
         panel.add(titlePanel);
 
         // Table of appointments
