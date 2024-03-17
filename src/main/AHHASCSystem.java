@@ -238,8 +238,9 @@ public class AHHASCSystem {
             DataAccess.readUserDataFromCSV(users, userFilePath, User.class);
             DataAccess.readCustomerDataFromCSV(customers, customerFilePath, Customer.class);
             DataAccess.readAppointmentDataFromCSV(appointments, appointmentFilePath, users, customers);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("Failed to read data from file.");
         }
     }
 

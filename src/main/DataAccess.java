@@ -22,7 +22,7 @@ class DataAccess {
     }
 
     public static void readUserDataFromCSV(Map<String, User> users, String filePath, Class<User> userClass)
-            throws Exception {
+            throws IOException {
         BufferedReader reader = getReaderOrInitializeFile(filePath);
         if (reader == null) {
             return;
@@ -43,7 +43,7 @@ class DataAccess {
     }
 
     public static void readCustomerDataFromCSV(Map<String, Customer> customers, String filePath,
-            Class<Customer> customerClass) throws Exception {
+            Class<Customer> customerClass) throws IOException {
         BufferedReader reader = getReaderOrInitializeFile(filePath);
         if (reader == null) {
             return;
@@ -59,7 +59,7 @@ class DataAccess {
     }
 
     public static void readAppointmentDataFromCSV(Map<String, Appointment> appointments, String filePath,
-            Map<String, User> users, Map<String, Customer> customers) throws Exception {
+            Map<String, User> users, Map<String, Customer> customers) throws IOException {
         BufferedReader reader = getReaderOrInitializeFile(filePath);
         if (reader == null) {
             return;
