@@ -28,8 +28,10 @@ public class UserInterface {
 
         LoginPanel loginPanel = new LoginPanel(this, system, frame);
         RegisterPanel registerPanel = new RegisterPanel(this, system, frame);
+        TechnicianPanel technicianPanel = new TechnicianPanel(this, system, frame);
         centerPanel.add(loginPanel.getPanel(), "login");
         centerPanel.add(registerPanel.getPanel(), "register");
+        centerPanel.add(technicianPanel.getPanel(), "technician");
 
         frame.setContentPane(centerPanel);
 
@@ -147,6 +149,48 @@ class RegisterPanel {
             userInterface.showPanel("login");
         });
         panel.add(loginRedirectButton);
+    }
+
+    public JPanel getPanel() {
+        return panel;
+    }
+}
+
+class TechnicianPanel {
+    private JPanel panel;
+
+    public TechnicianPanel(UserInterface userInterface, AHHASCSystem system, JFrame frame) {
+        panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+
+        // Check assigned appointments
+        JButton checkAssignedAppointmentsButton = new JButton("Check assigned appointments");
+        checkAssignedAppointmentsButton.addActionListener(e -> {
+            // TODO
+        });
+        panel.add(checkAssignedAppointmentsButton);
+
+        // Collect payment
+        JButton collectPaymentButton = new JButton("Collect payment");
+        collectPaymentButton.addActionListener(e -> {
+            // TODO
+        });
+        panel.add(collectPaymentButton);
+
+        // Enter feedback
+        JButton enterFeedbackButton = new JButton("Enter feedback");
+        enterFeedbackButton.addActionListener(e -> {
+            // TODO
+        });
+        panel.add(enterFeedbackButton);
+
+        // Logout button
+        // TODO make it reussable?
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.addActionListener(e -> {
+            userInterface.showPanel("login");
+        });
+        panel.add(logoutButton);
     }
 
     public JPanel getPanel() {
