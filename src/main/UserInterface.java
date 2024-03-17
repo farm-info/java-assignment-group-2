@@ -54,12 +54,6 @@ public class UserInterface {
         frame.pack();
         frame.setVisible(true);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new UserInterface();
-        });
-    }
 }
 
 class LoginPanel {

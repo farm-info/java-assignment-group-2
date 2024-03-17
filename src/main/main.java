@@ -1,7 +1,11 @@
 package main;
 
+import javax.swing.SwingUtilities;
+
 public class main {
     public static void main(String[] args) {
-        UserInterface ui = new UserInterface();
+        SwingUtilities.invokeLater(() -> {
+            new UserInterface();
+        });
     }
 }
