@@ -170,6 +170,22 @@ class RegisterPanel {
     }
 }
 
+class LogoutButton {
+    private JButton logoutButton;
+
+    public LogoutButton(UserInterface userInterface, AHHASCSystem system) {
+        logoutButton = new JButton("Logout");
+        logoutButton.addActionListener(e -> {
+            system.logout();
+            userInterface.showPanel("login");
+        });
+    }
+
+    public JButton getLogoutButton() {
+        return logoutButton;
+    }
+}
+
 /*
  * technicianPanel: a table of all appointments, uses getAssignedAppointments()
  * - each row is an appointment and contains a button to view the appointment
@@ -211,13 +227,7 @@ class TechnicianPanel {
         panel.add(scrollPane);
 
         // Logout button
-        // TODO make it reusable
-        // TODO clear username and password fields
-        JButton logoutButton = new JButton("Logout");
-        logoutButton.addActionListener(e -> {
-            system.logout();
-            userInterface.showPanel("login");
-        });
+        JButton logoutButton = new LogoutButton(userInterface, system).getLogoutButton();
         panel.add(logoutButton);
     }
 
