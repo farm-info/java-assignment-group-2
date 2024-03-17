@@ -9,8 +9,6 @@ public class UserInterface {
     private CardLayout cardLayout;
 
     private JPanel centerPanel;
-    private LoginPanel loginPanel;
-    private RegisterPanel registerPanel;
 
     private AHHASCSystem system;
 
@@ -28,8 +26,8 @@ public class UserInterface {
         centerPanel = new JPanel();
         centerPanel.setLayout(cardLayout);
 
-        loginPanel = new LoginPanel(this, system, frame);
-        registerPanel = new RegisterPanel(this, system, frame);
+        LoginPanel loginPanel = new LoginPanel(this, system, frame);
+        RegisterPanel registerPanel = new RegisterPanel(this, system, frame);
         centerPanel.add(loginPanel.getPanel(), "login");
         centerPanel.add(registerPanel.getPanel(), "register");
 
