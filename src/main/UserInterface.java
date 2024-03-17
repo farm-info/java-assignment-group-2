@@ -92,7 +92,8 @@ class LoginPanel {
             User.Role userRole = system.login(username, password);
             if (userRole != null) {
                 JOptionPane.showMessageDialog(frame, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                // TODO doesn't work until i implement these classes
+
+                // TODO implement the panels
                 if (userRole == User.Role.CENTRE_MANAGER) {
                     userInterface.showPanel("centreManager");
                 } else if (userRole == User.Role.TECHNICIAN) {
