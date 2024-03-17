@@ -6,8 +6,12 @@ import java.awt.event.*;
 
 public class UserInterface {
     private JFrame frame;
+    private CardLayout cardLayout;
+
+    private JPanel centerPanel;
     private LoginPanel loginPanel;
     private RegisterPanel registerPanel;
+
     private AHHASCSystem system;
 
     public UserInterface() {
@@ -16,24 +20,26 @@ public class UserInterface {
     }
 
     private void createAndShowUI() {
+        cardLayout = new CardLayout();
         frame = new JFrame("AHHASC System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
 
+        centerPanel = new JPanel();
+        centerPanel.setLayout(cardLayout);
+
         loginPanel = new LoginPanel(this, system, frame);
         registerPanel = new RegisterPanel(this, system, frame);
+        centerPanel.add(loginPanel.getPanel(), "login");
+        centerPanel.add(registerPanel.getPanel(), "register");
 
-        showLoginPanel();
+        frame.setContentPane(centerPanel);
+
+        showPanel("login");
     }
 
-    public void showLoginPanel() {
-        frame.setContentPane(loginPanel.getPanel());
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-    public void showRegisterPanel() {
-        frame.setContentPane(registerPanel.getPanel());
+    public void showPanel(String panelName) {
+        cardLayout.show(centerPanel, panelName);
         frame.pack();
         frame.setVisible(true);
     }
@@ -85,7 +91,7 @@ class LoginPanel {
         // Register redirect button
         registerRedirectButton = new JButton("Go to Register page");
         registerRedirectButton.addActionListener(e -> {
-            userInterface.showRegisterPanel();
+            userInterface.showPanel("register");
         });
         panel.add(registerRedirectButton);
     }
@@ -126,7 +132,7 @@ class RegisterPanel {
             if (success != null) {
                 JOptionPane.showMessageDialog(frame, "Registration successful!", "Success",
                         JOptionPane.INFORMATION_MESSAGE);
-                userInterface.showRegisterPanel();
+                userInterface.showPanel("login");
             } else {
                 JOptionPane.showMessageDialog(frame, "Registration failed: ", "Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -137,7 +143,7 @@ class RegisterPanel {
         // Redirect to login page
         JButton loginRedirectButton = new JButton("Go to Login page");
         loginRedirectButton.addActionListener(e -> {
-            userInterface.showLoginPanel();
+            userInterface.showPanel("login");
         });
         panel.add(loginRedirectButton);
     }
