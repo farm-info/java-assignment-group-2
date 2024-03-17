@@ -40,6 +40,14 @@ public class UserInterface {
     }
 
     private void createAndShowUI() {
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException
+                | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
         cardLayout = new CardLayout();
         frame = new JFrame("AHHASC System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
