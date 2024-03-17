@@ -73,36 +73,36 @@ class Technician extends User {
 
 class Customer extends BaseItem {
     private String name;
-    private String contact_number;
-    private String contact_email;
+    private String contactNumber;
+    private String contactEmail;
 
-    public Customer(String name, String contactNumber, String contact_email) {
+    public Customer(String name, String contactNumber, String contactEmail) {
         this.name = name;
-        this.contact_number = contactNumber;
-        this.contact_email = contact_email;
+        this.contactNumber = contactNumber;
+        this.contactEmail = contactEmail;
     }
 
-    public Customer(String Id, String name, String contactDetails, String contact_email) {
+    public Customer(String Id, String name, String contactNumber, String contactEmail) {
         this.setId(Id);
         this.name = name;
-        this.contact_number = contactDetails;
-        this.contact_email = contact_email;
+        this.contactNumber = contactNumber;
+        this.contactEmail = contactEmail;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getContact_number() {
-        return contact_number;
+    public String getContactNumber() {
+        return contactNumber;
     }
 
-    public String getContact_email() {
-        return contact_email;
+    public String getContactEmail() {
+        return contactEmail;
     }
 
     public String toString() {
-        return getId() + "," + name + "," + contact_number + "," + contact_email;
+        return getId() + "," + name + "," + contactNumber + "," + contactEmail;
     }
 }
 
