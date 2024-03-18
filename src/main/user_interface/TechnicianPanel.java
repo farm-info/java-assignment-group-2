@@ -32,9 +32,7 @@ class TechnicianPanel {
         panel.setLayout(new BorderLayout());
 
         // Title
-        JPanel titlePanel = new JPanel(new BorderLayout());
-        JLabel title = new JLabel("Your appointments");
-        titlePanel.add(title, BorderLayout.WEST);
+        JPanel titlePanel = new TitlePanel("Your appointments").getTitlePanel();
 
         // Update table button
         JButton updateButton = new JButton("Update");
