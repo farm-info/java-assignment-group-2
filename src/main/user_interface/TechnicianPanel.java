@@ -1,12 +1,18 @@
 package main.user_interface;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.table.*;
+import javax.swing.text.DefaultFormatter;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+
 import main.system.*;
 
 /*
