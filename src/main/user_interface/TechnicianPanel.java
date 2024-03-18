@@ -47,7 +47,6 @@ class TechnicianPanel {
         appointmentsTableModel = new AppointmentsTableModel();
         appointmentsTable.setModel(appointmentsTableModel);
 
-        // TODO test
         Action goToAppointment = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 int modelRow = Integer.valueOf(e.getActionCommand());
