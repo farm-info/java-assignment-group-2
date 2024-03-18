@@ -1,16 +1,78 @@
 package main.user_interface;
 
-import java.awt.*;
+import java.util.*;
+import java.util.List;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+import java.awt.*;
+import java.awt.event.*;
+
 import javax.swing.*;
-import javax.swing.text.DefaultFormatter;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.NumberFormatter;
+import javax.swing.text.*;
+import javax.swing.table.AbstractTableModel;
 
 import main.system.AHHASCSystem;
 import main.system.Appointment;
+
+abstract class AppointmentsPanel {
+    protected JPanel panel;
+    protected AHHASCSystem system;
+    protected Map<String, Appointment> assignedAppointments;
+    protected AppointmentsTableModel appointmentsTableModel;
+
+    public AppointmentsPanel(UserInterface userInterface, AHHASCSystem system, String title) {
+        this.system = system;
+
+        panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        // Title
+        JPanel titlePanel = new TitlePanel(title).getTitlePanel();
+
+        // Update table button
+        JButton updateButton = new JButton("Update");
+        updateButton.addActionListener(e -> {
+            updateAppointmentsTable();
+        });
+        titlePanel.add(updateButton, BorderLayout.EAST);
+        panel.add(titlePanel, BorderLayout.NORTH);
+
+        // Table of appointments
+        JTable appointmentsTable = new JTable();
+        appointmentsTableModel = new AppointmentsTableModel();
+        appointmentsTable.setModel(appointmentsTableModel);
+
+        Action goToAppointment = new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                int modelRow = Integer.valueOf(e.getActionCommand());
+                Appointment appointment = appointmentsTableModel.appointments.get(modelRow);
+                createTechnicianAppointmentWindow(appointment);
+            }
+        };
+
+        ButtonColumn buttonColumn = new ButtonColumn(appointmentsTable, goToAppointment, 8);
+        buttonColumn.setMnemonic(KeyEvent.VK_D);
+
+        JScrollPane scrollPane = new JScrollPane(appointmentsTable);
+        appointmentsTable.setFillsViewportHeight(true);
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        // Logout button
+        JPanel logoutPanel = new JPanel(new BorderLayout());
+        JButton logoutButton = new LogoutButton(userInterface, system).getLogoutButton();
+        logoutPanel.add(logoutButton, BorderLayout.EAST);
+        panel.add(logoutPanel, BorderLayout.SOUTH);
+    }
+
+    abstract public void updateAppointmentsTable();
+
+    abstract protected void createTechnicianAppointmentWindow(Appointment appointment);
+
+    public JPanel getPanel() {
+        return panel;
+    }
+}
 
 /*
  * Window for each appointment
@@ -142,5 +204,83 @@ class AppointmentWindow {
 
     public void setVisible(boolean visible) {
         frame.setVisible(visible);
+    }
+}
+
+class AppointmentsTableModel extends AbstractTableModel {
+    protected List<Appointment> appointments = new ArrayList<>();
+
+    @Override
+    public int getRowCount() {
+        return appointments.size();
+    }
+
+    @Override
+    public int getColumnCount() {
+        return 9;
+    }
+
+    public Object getValueAt(int row, int column) {
+        Appointment appointment = appointments.get(row);
+        switch (column) {
+            case 0:
+                return appointment.getCustomer().getName();
+            case 1:
+                return appointment.getCustomer().getContactEmail();
+            case 2:
+                return appointment.getCustomer().getContactNumber();
+            case 3:
+                return appointment.getAppointmentDate();
+            case 4:
+                return appointment.getCreationDate();
+            case 5:
+                return appointment.getPaymentStatus();
+            case 6:
+                return appointment.getPaymentAmount();
+            case 7:
+                return appointment.getFeedback();
+            case 8:
+                return "View";
+            default:
+                return null;
+        }
+    }
+
+    public String getColumnName(int column) {
+        switch (column) {
+            case 0:
+                return "Customer Name";
+            case 1:
+                return "Customer Email";
+            case 2:
+                return "Customer Phone";
+            case 3:
+                return "Appointment Date";
+            case 4:
+                return "Creation Date";
+            case 5:
+                return "Payment Status";
+            case 6:
+                return "Payment Amount";
+            case 7:
+                return "Feedback";
+            case 8:
+                return "View Appointment";
+            default:
+                return null;
+        }
+    }
+
+    public boolean isCellEditable(int row, int column) {
+        switch (column) {
+            case 8:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }
