@@ -48,7 +48,14 @@ public class UserInterface {
 
         cardLayout = new CardLayout();
         frame = new JFrame("AHHASC System");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                system.saveData();
+                System.exit(0);
+            }
+        });
         frame.setSize(400, 300);
 
         centerPanel = new JPanel();
