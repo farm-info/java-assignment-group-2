@@ -1,7 +1,9 @@
 package main.user_interface;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
+import java.awt.event.*;
+import javax.swing.table.*;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -44,6 +46,19 @@ class TechnicianPanel {
         JTable appointmentsTable = new JTable();
         appointmentsTableModel = new AppointmentsTableModel();
         appointmentsTable.setModel(appointmentsTableModel);
+
+        // TODO test
+        Action goToAppointment = new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                int modelRow = Integer.valueOf(e.getActionCommand());
+                Appointment appointment = appointmentsTableModel.appointments.get(modelRow);
+                createTechnicianAppointmentWindow(appointment);
+            }
+        };
+
+        ButtonColumn buttonColumn = new ButtonColumn(appointmentsTable, goToAppointment, 8);
+        buttonColumn.setMnemonic(KeyEvent.VK_D);
+
         JScrollPane scrollPane = new JScrollPane(appointmentsTable);
         appointmentsTable.setFillsViewportHeight(true);
         panel.add(scrollPane);
@@ -58,13 +73,23 @@ class TechnicianPanel {
         appointmentsTableModel.setAppointments(new ArrayList<>(assignedAppointments.values()));
     }
 
+    private void createTechnicianAppointmentWindow(Appointment appointment) {
+        // Option 1: Using a separate window/frame
+        AppointmentWindow window = new AppointmentWindow(appointment);
+        window.setVisible(true);
+
+        // Option 2: Programmatic navigation within the same window (if applicable)
+        // Replace with your specific code to update the UI with appointment details
+        // yourPanel.updateAppointmentDetails(appointment);
+    }
+
     public JPanel getPanel() {
         return panel;
     }
 }
 
 class AppointmentsTableModel extends AbstractTableModel {
-    private List<Appointment> appointments = new ArrayList<>();
+    protected List<Appointment> appointments = new ArrayList<>();
 
     @Override
     public int getRowCount() {
@@ -73,7 +98,7 @@ class AppointmentsTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 8;
+        return 9;
     }
 
     public Object getValueAt(int row, int column) {
@@ -95,7 +120,8 @@ class AppointmentsTableModel extends AbstractTableModel {
                 return appointment.getPaymentAmount();
             case 7:
                 return appointment.getFeedback();
-            // TODO button to view appointment
+            case 8:
+                return "View";
             default:
                 return null;
         }
@@ -127,10 +153,34 @@ class AppointmentsTableModel extends AbstractTableModel {
     }
 
     public boolean isCellEditable(int row, int column) {
-        return false;
+        switch (column) {
+            case 8:
+                return true;
+            default:
+                return false;
+        }
     }
 
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
+    }
+}
+
+class AppointmentWindow {
+    private JFrame frame;
+    private Appointment appointment;
+
+    public AppointmentWindow(Appointment appointment) {
+        this.appointment = appointment;
+
+        frame = new JFrame("Appointment Details");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(400, 300);
+
+        // TODO
+    }
+
+    public void setVisible(boolean visible) {
+        frame.setVisible(visible);
     }
 }
