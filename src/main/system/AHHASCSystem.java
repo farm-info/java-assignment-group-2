@@ -94,7 +94,7 @@ public class AHHASCSystem {
             throw new IllegalArgumentException("Invalid user type.");
         }
 
-        save();
+        saveData();
         System.out.println("User created successfully.");
         return newUser;
     }
@@ -108,7 +108,7 @@ public class AHHASCSystem {
         return users;
     }
 
-    public void save() {
+    public void saveData() {
         // TODO change this
         DataAccess.saveObjectsToCSV(users, userFilePath);
         DataAccess.saveObjectsToCSV(customers, customerFilePath);

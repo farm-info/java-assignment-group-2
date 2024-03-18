@@ -36,6 +36,6 @@ public class exampleUsage {
         } else if (system.getCurrentUser().getRole().equals(User.Role.TECHNICIAN)) {
             // idk
         }
-        system.save();
+        system.saveData();
     }
 }
