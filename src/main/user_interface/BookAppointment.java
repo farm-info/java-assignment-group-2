@@ -1,3 +1,5 @@
+package main.user_interface;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +16,7 @@ public class BookAppointment extends JFrame implements ActionListener {
 
         JLabel titleLabel = new JLabel("Book an Appointment");
         titleLabel.setBounds(300, 90, 300, 30);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20)); 
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         add(titleLabel);
 
         JLabel nameLabel = new JLabel("Customer Name:");
