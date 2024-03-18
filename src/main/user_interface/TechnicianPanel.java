@@ -12,10 +12,6 @@ import main.system.*;
 /*
  * technicianPanel: a table of all appointments, uses getAssignedAppointments()
  * - each row is an appointment and contains a button to view the appointment
- * each appointment has a page, which can use:
- * - collectPayment() from customers
- * - enterFeedback() for customers to enter feedback after each appointment
- * - a back button to return to the table
  */
 class TechnicianPanel {
     private JPanel panel;
@@ -167,6 +163,11 @@ class AppointmentsTableModel extends AbstractTableModel {
     }
 }
 
+/*
+ * Window for each appointment
+ * - collectPayment() from customers
+ * - enterFeedback() for customers to enter feedback after each appointment
+ */
 class AppointmentWindow {
     private JFrame frame;
     private Appointment appointment;
