@@ -125,13 +125,13 @@ public class AHHASCSystem {
         return appointment;
     }
 
-    public Boolean removeAppointment(Appointment appointment) {
+    public Boolean removeAppointment(String appointmentId) {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
             System.out.println("Permission denied: Cancel appointment");
             return false;
         }
 
-        appointments.remove(appointment.getId());
+        appointments.remove(appointmentId);
         return true;
     }
 
@@ -183,13 +183,17 @@ public class AHHASCSystem {
 
     // technician features
     public Map<String, Appointment> getAssignedAppointments(Technician technician) {
+        String technicianId = technician.getId();
+        return getAssignedAppointments(technicianId);
+    }
+
+    public Map<String, Appointment> getAssignedAppointments(String technicianId) {
         if (!hasCurrentUserPermission(User.Role.TECHNICIAN)) {
             System.out.println("Permission denied: Check assigned appointments");
             return null;
         }
 
         Map<String, Appointment> technicianAppointments = new HashMap<String, Appointment>();
-        String technicianId = technician.getId();
         for (Map.Entry<String, Appointment> entry : appointments.entrySet()) {
             Appointment appointment = entry.getValue();
             if (appointment.getTechnician().getId().equals(technicianId)) {
@@ -200,24 +204,26 @@ public class AHHASCSystem {
         return technicianAppointments;
     }
 
-    public Boolean setAppointmentPayment(Appointment appointment, BigDecimal paymentAmount, Boolean paymentStatus) {
+    public Boolean setAppointmentPayment(String appointmentId, BigDecimal paymentAmount, Boolean paymentStatus) {
         if (!hasCurrentUserPermission(User.Role.TECHNICIAN)) {
             System.out.println("Permission denied: Collect payment");
             return false;
         }
 
+        Appointment appointment = appointments.get(appointmentId);
         appointment.setPaymentAmount(paymentAmount);
         appointment.setPaymentStatus(paymentStatus);
         System.out.println("Payment collected for appointment.");
         return true;
     }
 
-    public void setAppointmentFeedback(Appointment appointment, String feedback) {
+    public void setAppointmentFeedback(String appointmentId, String feedback) {
         if (!(hasCurrentUserPermission(User.Role.TECHNICIAN) || hasCurrentUserPermission(User.Role.CENTRE_MANAGER))) {
             System.out.println("Permission denied: Enter feedback");
             return;
         }
 
+        Appointment appointment = appointments.get(appointmentId);
         appointment.setFeedback(feedback);
         System.out.println("Feedback entered for appointment.");
     }
