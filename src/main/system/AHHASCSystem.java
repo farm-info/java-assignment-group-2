@@ -33,7 +33,10 @@ public class AHHASCSystem {
         }
     }
 
-    // permission checks
+    /*
+     * Permission checks
+     * This should have been an error, but we don't wanna complicate it
+     */
     private boolean hasCurrentUserPermission(User.Role requiredRole) {
         return currentUser != null && currentUser.getRole() == requiredRole;
     }
