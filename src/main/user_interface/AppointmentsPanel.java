@@ -80,17 +80,17 @@ abstract class AppointmentsPanel {
  * - collectPayment() from customers
  * - enterFeedback() for customers to enter feedback after each appointment
  */
-class AppointmentWindow {
+abstract class AppointmentWindow {
     // TODO decimal format add to all
-    private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-    private AHHASCSystem system;
-    private Appointment appointment;
+    protected DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+    protected AHHASCSystem system;
+    protected Appointment appointment;
 
-    private JFrame frame;
-    private JPanel panel, nestedPanel;
-    private Boolean paymentStatus;
-    private BigDecimal paymentAmount;
-    private JLabel paymentStatusLabel, paymentAmountLabel;
+    protected JFrame frame;
+    protected JPanel panel, nestedPanel;
+    protected Boolean paymentStatus;
+    protected BigDecimal paymentAmount;
+    protected JLabel paymentStatusLabel, paymentAmountLabel;
 
     public AppointmentWindow(Appointment appointment, AHHASCSystem system) {
         this.appointment = appointment;
@@ -99,12 +99,12 @@ class AppointmentWindow {
         createFrameAndPanel();
         createTitlePanel();
         createDetailsPanel();
-        // for technicians
-        createPaymentPanel();
-        createFeedbackPanel();
+        createBottomPanels();
 
         frame.setContentPane(panel);
     }
+
+    abstract protected void createBottomPanels();
 
     private void createFrameAndPanel() {
         frame = new JFrame("Appointment Details");
@@ -156,50 +156,6 @@ class AppointmentWindow {
         detailsPanel.add(new JLabel("Feedback:"));
         detailsPanel.add(new JLabel(appointment.getFeedback()));
         nestedPanel.add(detailsPanel, BorderLayout.CENTER);
-    }
-
-    private void createPaymentPanel() {
-        JPanel collectPaymentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JFormattedTextField paymentAmountField = new JFormattedTextField(paymentAmount);
-        DefaultFormatter fmt = new NumberFormatter(decimalFormat);
-        fmt.setValueClass(paymentAmountField.getValue().getClass());
-        DefaultFormatterFactory fmtFactory = new DefaultFormatterFactory(fmt, fmt, fmt);
-        paymentAmountField.setFormatterFactory(fmtFactory);
-
-        JCheckBox paymentStatusCheckbox = new JCheckBox("Paid", paymentStatus);
-        JButton collectPaymentButton = new JButton("Modify payment status");
-        collectPaymentButton.addActionListener(e -> {
-            try {
-                BigDecimal newPaymentAmount = new BigDecimal(paymentAmountField.getText());
-                system.setAppointmentPayment(appointment.getId(), newPaymentAmount, paymentStatusCheckbox.isSelected());
-                // Update data // Payment panel
-
-                paymentStatusLabel.setText(paymentStatusCheckbox.isSelected() ? "Paid" : "Unpaid");
-                paymentAmountLabel.setText(decimalFormat.format(newPaymentAmount));
-                JOptionPane.showMessageDialog(frame, "Payment updated successfully.");
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(frame, "Invalid payment amount.");
-            }
-        });
-        collectPaymentPanel.add(new JLabel("Payment amount:"));
-        collectPaymentPanel.add(paymentAmountField);
-        collectPaymentPanel.add(paymentStatusCheckbox);
-        collectPaymentPanel.add(collectPaymentButton);
-        nestedPanel.add(collectPaymentPanel, BorderLayout.SOUTH);
-    }
-
-    private void createFeedbackPanel() {
-        JPanel feedbackPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JTextField feedbackField = new JTextField(appointment.getFeedback());
-        JButton enterFeedbackButton = new JButton("Enter feedback");
-        enterFeedbackButton.addActionListener(e -> {
-            system.setAppointmentFeedback(appointment.getId(), feedbackField.getText());
-            JOptionPane.showMessageDialog(frame, "Feedback updated successfully.");
-        });
-        feedbackPanel.add(new JLabel("Feedback:"));
-        feedbackPanel.add(feedbackField);
-        feedbackPanel.add(enterFeedbackButton);
-        panel.add(feedbackPanel, BorderLayout.SOUTH);
     }
 
     public void setVisible(boolean visible) {
