@@ -180,12 +180,10 @@ class AppointmentWindow {
     private Appointment appointment;
 
     private JFrame frame;
-    private JPanel nestedPanel;
-    private JPanel panel;
+    private JPanel panel, nestedPanel;
     private Boolean paymentStatus;
-    private JLabel paymentStatusLabel;
     private BigDecimal paymentAmount;
-    private JLabel paymentAmountLabel;
+    private JLabel paymentStatusLabel, paymentAmountLabel;
 
     public AppointmentWindow(Appointment appointment, AHHASCSystem system) {
         this.appointment = appointment;
