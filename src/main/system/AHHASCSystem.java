@@ -142,7 +142,7 @@ public class AHHASCSystem {
     // technicians can edit stuff from their list, which is a big no
     // WONTFIX implement setters for them?
 
-    public Map<String, Appointment> getAppointments() {
+    public Map<String, Appointment> getAllAppointments() {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
             System.out.println("Permission denied: Cancel appointment");
             return null;

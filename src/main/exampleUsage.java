@@ -29,7 +29,7 @@ public class exampleUsage {
         if (system.getCurrentUser().getRole().equals(User.Role.CENTRE_MANAGER)) {
             // this is broken
             // system.addAppointment(cu, t, LocalDate.now(), BigDecimal.valueOf(100));
-            system.getAppointments().forEach((k, v) -> {
+            system.getAllAppointments().forEach((k, v) -> {
                 System.out.println(v);
             });
 
