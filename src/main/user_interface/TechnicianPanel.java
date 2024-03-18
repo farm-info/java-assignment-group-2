@@ -27,7 +27,7 @@ class TechnicianPanel {
         this.system = system;
 
         panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setLayout(new BorderLayout());
 
         // Title
         JPanel titlePanel = new JPanel(new BorderLayout());
@@ -40,7 +40,7 @@ class TechnicianPanel {
             updateAppointmentsTable();
         });
         titlePanel.add(updateButton, BorderLayout.EAST);
-        panel.add(titlePanel);
+        panel.add(titlePanel, BorderLayout.NORTH);
 
         // Table of appointments
         JTable appointmentsTable = new JTable();
@@ -60,11 +60,13 @@ class TechnicianPanel {
 
         JScrollPane scrollPane = new JScrollPane(appointmentsTable);
         appointmentsTable.setFillsViewportHeight(true);
-        panel.add(scrollPane);
+        panel.add(scrollPane, BorderLayout.CENTER);
 
         // Logout button
+        JPanel logoutPanel = new JPanel(new BorderLayout());
         JButton logoutButton = new LogoutButton(userInterface, system).getLogoutButton();
-        panel.add(logoutButton);
+        logoutPanel.add(logoutButton, BorderLayout.EAST);
+        panel.add(logoutPanel, BorderLayout.SOUTH);
     }
 
     public void updateAppointmentsTable() {
