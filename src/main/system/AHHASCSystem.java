@@ -105,6 +105,7 @@ public class AHHASCSystem {
             return null;
         }
 
+        System.out.println("User list accessed.");
         return users;
     }
 
@@ -125,6 +126,7 @@ public class AHHASCSystem {
 
         Appointment appointment = new Appointment(customer, technician, appointmentDate, paymentAmount);
         appointments.put(appointment.getId(), appointment);
+        System.out.println("Appointment " + appointment.getId() + " booked successfully.");
         return appointment;
     }
 
@@ -135,6 +137,7 @@ public class AHHASCSystem {
         }
 
         appointments.remove(appointmentId);
+        System.out.println("Appointment " + appointmentId + " cancelled successfully.");
         return true;
     }
 
@@ -148,6 +151,7 @@ public class AHHASCSystem {
             return null;
         }
 
+        System.out.println("Appointment list accessed by centre manager.");
         return appointments;
     }
 
@@ -181,6 +185,7 @@ public class AHHASCSystem {
             return null;
         }
 
+        System.out.println("Customer list accessed.");
         return customers;
     }
 
