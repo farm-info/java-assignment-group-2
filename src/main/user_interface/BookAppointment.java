@@ -11,7 +11,6 @@ public class BookAppointment extends JFrame implements ActionListener {
     public BookAppointment() {
         setTitle("Book Appointment");
         setSize(800, 700);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
 
         JLabel titleLabel = new JLabel("Book an Appointment");
@@ -109,9 +108,5 @@ public class BookAppointment extends JFrame implements ActionListener {
         phoneField.setText("");
         dateField.setText("");
         feedbackField.setText("");
-    }
-
-    public static void main(String[] args) {
-        new BookAppointment();
     }
 }
