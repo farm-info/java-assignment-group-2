@@ -175,7 +175,7 @@ public class AHHASCSystem {
         return true;
     }
 
-    public Map<String, Customer> getCustomers() {
+    public Map<String, Customer> getAllCustomers() {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
             System.out.println("Permission denied: Get customer list");
             return null;
