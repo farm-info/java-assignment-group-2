@@ -67,7 +67,7 @@ public class UserInterface {
         centerPanel.add(loginPanel.getPanel(), "login");
         centerPanel.add(registerPanel.getPanel(), "register");
         centerPanel.add(technicianPanel.getPanel(), "technician");
-        centerPanel.add(new CenterManagerPanel(), "centerManager");
+        centerPanel.add(new centreManagerPanel(), "centreManager");
 
         frame.setContentPane(centerPanel);
 
