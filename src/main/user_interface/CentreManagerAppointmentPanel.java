@@ -1,12 +1,10 @@
 package main.user_interface;
 
-import java.io.IOException;
 import java.util.*;
 
 import javax.swing.*;
 import java.awt.*;
 
-import main.data_access.ItemNotFoundException;
 import main.system.*;
 
 class CentreManagerAppointmentPanel extends AppointmentsPanel {
@@ -16,7 +14,7 @@ class CentreManagerAppointmentPanel extends AppointmentsPanel {
         // Book appointment
         JButton createAppointmentButton = new JButton("Book appointment");
         createAppointmentButton.addActionListener(e -> {
-            BookAppointment window = new BookAppointment();
+            BookAppointment window = new BookAppointment(system);
             window.setVisible(true);
         });
         titleButtonPanel.add(createAppointmentButton);

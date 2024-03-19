@@ -1,14 +1,41 @@
 package main.user_interface;
 
 import javax.swing.*;
+import javax.swing.text.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+
+import java.io.IOException;
+
+import java.math.BigDecimal;
+import java.text.*;
+import java.time.*;
+import java.time.format.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.List;
+
+import main.data_access.ItemNotFoundException;
+import main.system.*;
 
 public class BookAppointment extends JFrame implements ActionListener {
-    private JTextField nameField, emailField, phoneField, dateField, feedbackField;
+    protected DecimalFormat decimalFormat = new DecimalFormat("#0.00");
 
-    public BookAppointment() {
+    private JComboBox<String> customerComboBox, technicianComboBox;
+    private JFormattedTextField paymentAmountField, datePicker;
+
+    private AHHASCSystem system;
+    private Map<String, Customer> customers;
+    private List<Technician> technicians;
+
+    public BookAppointment(AHHASCSystem system, Customer customer) {
+        // TODO constructor where the combo box is pre-filled with the customer's name
+        this(system);
+    }
+
+    public BookAppointment(AHHASCSystem system) {
+        this.system = system;
+
         setTitle("Book Appointment");
         setSize(800, 700);
         setLayout(null);
@@ -18,45 +45,57 @@ public class BookAppointment extends JFrame implements ActionListener {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         add(titleLabel);
 
-        JLabel nameLabel = new JLabel("Customer Name:");
-        nameLabel.setBounds(50, 190, 100, 25);
+        JLabel nameLabel = new JLabel("Customer:");
+        nameLabel.setBounds(50, 190, 150, 25);
         add(nameLabel);
 
-        nameField = new JTextField();
-        nameField.setBounds(170, 190, getWidth() - 200, 25);
-        add(nameField);
+        customers = system.getAllCustomers();
+        String[] customerNames = new String[customers.size()];
+        customerComboBox = new JComboBox<>(customers.keySet().toArray(customerNames));
+        customerComboBox.setBounds(170, 190, getWidth() - 200, 25);
+        add(customerComboBox);
 
-        JLabel emailLabel = new JLabel("Customer Email:");
-        emailLabel.setBounds(50, 230, 100, 25);
-        add(emailLabel);
+        JLabel technicianLabel = new JLabel("Technician:");
+        technicianLabel.setBounds(50, 230, 150, 25);
+        add(technicianLabel);
 
-        emailField = new JTextField();
-        emailField.setBounds(170, 230, getWidth() - 200, 25);
-        add(emailField);
+        Map<String, User> users = system.getUsers();
+        technicians = users.values().stream().filter(user -> user.getRole() == User.Role.TECHNICIAN)
+                .map(user -> (Technician) user).collect(Collectors.toList());
+        String[] technicianNames = new String[technicians.size()];
+        technicianComboBox = new JComboBox<>(
+                technicians.stream().map(Technician::getUsername).collect(Collectors.toList())
+                        .toArray(technicianNames));
+        technicianComboBox.setBounds(170, 230, getWidth() - 200, 25);
+        add(technicianComboBox);
 
-        JLabel phoneLabel = new JLabel("Customer Phone:");
-        phoneLabel.setBounds(50, 270, 100, 25);
-        add(phoneLabel);
+        JLabel nameLabel2 = new JLabel("Payment amount:");
+        nameLabel2.setBounds(50, 270, 150, 25);
+        add(nameLabel2);
 
-        phoneField = new JTextField();
-        phoneField.setBounds(170, 270, getWidth() - 200, 25);
-        add(phoneField);
+        // idk what do put for the default payment amount
+        paymentAmountField = new JFormattedTextField(10);
+        DefaultFormatter fmt = new NumberFormatter(decimalFormat);
+        fmt.setValueClass(paymentAmountField.getValue().getClass());
+        DefaultFormatterFactory fmtFactory = new DefaultFormatterFactory(fmt, fmt, fmt);
+        paymentAmountField.setFormatterFactory(fmtFactory);
+        paymentAmountField.setBounds(170, 270, getWidth() - 200, 25);
+        add(paymentAmountField);
 
         JLabel dateLabel = new JLabel("Appointment Date:");
-        dateLabel.setBounds(50, 310, 120, 25);
+        dateLabel.setBounds(50, 310, 150, 25);
         add(dateLabel);
 
-        dateField = new JTextField();
-        dateField.setBounds(170, 310, getWidth() - 200, 25);
-        add(dateField);
+        JLabel dateLabel2 = new JLabel("(dd/mm/yyyy)");
+        dateLabel2.setBounds(50, 330, 150, 25);
+        add(dateLabel2);
 
-        JLabel feedbackLabel = new JLabel("Feedback:");
-        feedbackLabel.setBounds(50, 350, 80, 25);
-        add(feedbackLabel);
-
-        feedbackField = new JTextField();
-        feedbackField.setBounds(170, 350, getWidth() - 200, 25);
-        add(feedbackField);
+        // FIXME this uses the old java.util.Date class, which is deprecated
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        datePicker = new JFormattedTextField(sdf);
+        datePicker.setBounds(170, 310, getWidth() - 200, 40);
+        datePicker.setValue(new Date());
+        add(datePicker);
 
         JButton bookButton = new JButton("Book Appointment");
         bookButton.setBounds(300, 390, 200, 25);
@@ -68,47 +107,46 @@ public class BookAppointment extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String name = nameField.getText();
-        String email = emailField.getText();
-        String phone = phoneField.getText();
-        String date = dateField.getText();
-        String feedback = feedbackField.getText();
+        String paymentAmount = paymentAmountField.getText();
+        String dateString = datePicker.getText();
 
+        // Validation
         // Check if any field is empty
-        if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || date.isEmpty() || feedback.isEmpty()) {
+        if (customerComboBox.getSelectedIndex() == -1
+                || technicianComboBox.getSelectedIndex() == -1
+                || paymentAmount.isEmpty()
+                || dateString == null) {
             JOptionPane.showMessageDialog(this, "Please fill in all the queries");
             return;
         }
 
-        // Check if phone number is a real phone number
+        LocalDate date;
         try {
-            long phoneNumber = Long.parseLong(phone);
-            // If the number is negative, not a real phone number
-            if (phoneNumber < 0) {
-                throw new NumberFormatException();
-            }
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid Phone Number");
+            date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        } catch (DateTimeParseException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid date input! Please enter a valid date.");
             return;
         }
 
-        // Check if date given is a real date
-        if (!date.matches("\\d{2}/\\d{2}/\\d{4}")) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid date in dd/mm/yyyy format");
-            return;
-        }
+        Customer customer = customers.get(customerComboBox.getSelectedItem());
+        Technician technicianId = technicians.get(technicianComboBox.getSelectedIndex());
 
-        // TODO Interact with backend
+        // Interact with backend
+        system.addAppointment(customer, technicianId, date, new BigDecimal(paymentAmount));
+        system.saveData();
 
-        // success message
+        // Success message
         String message = "Your appointment has been booked successfully!";
         JOptionPane.showMessageDialog(this, message);
 
-        // this to clear the text after submitting
-        nameField.setText("");
-        emailField.setText("");
-        phoneField.setText("");
-        dateField.setText("");
-        feedbackField.setText("");
+        // Clear the text after submitting
+        customerComboBox.setSelectedIndex(0);
+        technicianComboBox.setSelectedIndex(0);
+        paymentAmountField.setText("");
+        datePicker.setText("");
+    }
+
+    public static void main(String[] args) throws IOException, ItemNotFoundException {
+        new BookAppointment(new AHHASCSystem());
     }
 }
