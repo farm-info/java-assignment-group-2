@@ -48,6 +48,7 @@ class TechnicianAppointmentWindow extends AppointmentWindow {
 
     private void createPaymentPanel() {
         JPanel collectPaymentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        // TODO wait... is this supposed to be modified by the technician?
         JFormattedTextField paymentAmountField = new JFormattedTextField(paymentAmount);
         DefaultFormatter fmt = new NumberFormatter(decimalFormat);
         fmt.setValueClass(paymentAmountField.getValue().getClass());
