@@ -98,6 +98,8 @@ public class BookAppointment extends JFrame implements ActionListener {
             return;
         }
 
+        // TODO Interact with backend
+
         // success message
         String message = "Your appointment has been booked successfully!";
         JOptionPane.showMessageDialog(this, message);
