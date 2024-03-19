@@ -20,6 +20,7 @@ abstract class AppointmentsPanel {
     protected AHHASCSystem system;
     protected Map<String, Appointment> assignedAppointments;
     protected AppointmentsTableModel appointmentsTableModel;
+    protected JPanel titleButtonPanel;
 
     public AppointmentsPanel(UserInterface userInterface, AHHASCSystem system, String title) {
         this.system = system;
@@ -30,12 +31,16 @@ abstract class AppointmentsPanel {
         // Title
         JPanel titlePanel = new TitlePanel(title).getTitlePanel();
 
+        // Title button panel
+        titleButtonPanel = new JPanel(new FlowLayout());
+
         // Update table button
         JButton updateButton = new JButton("Update");
         updateButton.addActionListener(e -> {
             updateAppointmentsTable();
         });
-        titlePanel.add(updateButton, BorderLayout.EAST);
+        titleButtonPanel.add(updateButton, BorderLayout.EAST);
+        titlePanel.add(titleButtonPanel, BorderLayout.EAST);
         panel.add(titlePanel, BorderLayout.NORTH);
 
         // Table of appointments
