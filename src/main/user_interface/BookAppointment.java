@@ -135,7 +135,7 @@ public class BookAppointment extends JFrame implements ActionListener {
         // Interact with backend
         system.addAppointment(customer, technicianId, date, new BigDecimal(paymentAmount));
         system.saveData();
-        centreManagerAppointmentPanel.updateAppointmentsTable();
+        centreManagerAppointmentPanel.updateItemsTable();
 
         // Success message
         String message = "Your appointment has been booked successfully!";

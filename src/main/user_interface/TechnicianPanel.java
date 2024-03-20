@@ -19,13 +19,13 @@ class TechnicianPanel extends AppointmentsPanel {
     }
 
     @Override
-    public void updateAppointmentsTable() {
+    public void updateItemsTable() {
         assignedAppointments = system.getAssignedAppointments((Technician) system.getCurrentUser());
         appointmentsTableModel.setAppointments(new ArrayList<>(assignedAppointments.values()));
     }
 
     @Override
-    protected void createTechnicianAppointmentWindow(Appointment appointment) {
+    protected void createItemWindow(Appointment appointment) {
         AppointmentWindow window = new TechnicianAppointmentWindow(appointment, system);
         window.setVisible(true);
     }

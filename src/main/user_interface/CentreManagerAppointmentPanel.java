@@ -29,13 +29,13 @@ class CentreManagerAppointmentPanel extends AppointmentsPanel {
     }
 
     @Override
-    public void updateAppointmentsTable() {
+    public void updateItemsTable() {
         assignedAppointments = system.getAllAppointments();
         appointmentsTableModel.setAppointments(new ArrayList<>(assignedAppointments.values()));
     }
 
     @Override
-    protected void createTechnicianAppointmentWindow(Appointment appointment) {
+    protected void createItemWindow(Appointment appointment) {
         AppointmentWindow window = new CentreManagerAppointmentWindow(this, appointment, system);
         window.setVisible(true);
     }
@@ -90,7 +90,7 @@ class CentreManagerAppointmentWindow extends AppointmentWindow {
         confirmButton.addActionListener(e -> {
             system.removeAppointment(appointment.getId());
             system.saveData();
-            centreManagerAppointmentPanel.updateAppointmentsTable();
+            centreManagerAppointmentPanel.updateItemsTable();
             frame.dispose();
             confirmationFrame.dispose();
         });

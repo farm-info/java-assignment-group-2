@@ -25,11 +25,11 @@ public class CentreManagerCard extends javax.swing.JPanel {
     public void showPanel(String layoutName) {
         cardLayout.show(this, layoutName);
         if (layoutName.equals("appointments")) {
-            appointmentPanel.updateAppointmentsTable();
+            appointmentPanel.updateItemsTable();
         }
     }
 
     public void updateAppointmentsTable() {
-        appointmentPanel.updateAppointmentsTable();
+        appointmentPanel.updateItemsTable();
     }
 }

@@ -13,59 +13,29 @@ import javax.swing.table.AbstractTableModel;
 
 import main.system.AHHASCSystem;
 import main.system.Appointment;
+import main.system.BaseItem;
 
-abstract class AppointmentsPanel {
-    protected JPanel panel;
-    protected AHHASCSystem system;
+abstract class AppointmentsPanel extends TablePanel {
     protected Map<String, Appointment> assignedAppointments;
     protected AppointmentsTableModel appointmentsTableModel;
-    protected JPanel titleButtonPanel;
 
     public AppointmentsPanel(AHHASCSystem system, String title) {
-        this.system = system;
-
-        panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-
-        // Title
-        JPanel titlePanel = new TitlePanel(title).getTitlePanel();
-
-        // Title button panel
-        titleButtonPanel = new JPanel(new FlowLayout());
-
-        // Update table button
-        JButton updateButton = new JButton("Update table");
-        updateButton.addActionListener(e -> {
-            updateAppointmentsTable();
-        });
-        titleButtonPanel.add(updateButton, BorderLayout.EAST);
-        titlePanel.add(titleButtonPanel, BorderLayout.EAST);
-        panel.add(titlePanel, BorderLayout.NORTH);
-
-        // Table of appointments
-        JTable appointmentsTable = new JTable();
-        appointmentsTableModel = new AppointmentsTableModel();
-        appointmentsTable.setModel(appointmentsTableModel);
-
-        Action goToAppointment = new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
-                int modelRow = Integer.valueOf(e.getActionCommand());
-                Appointment appointment = appointmentsTableModel.appointments.get(modelRow);
-                createTechnicianAppointmentWindow(appointment);
-            }
-        };
-
-        ButtonColumn buttonColumn = new ButtonColumn(appointmentsTable, goToAppointment, 8);
-        buttonColumn.setMnemonic(KeyEvent.VK_D);
-
-        JScrollPane scrollPane = new JScrollPane(appointmentsTable);
-        appointmentsTable.setFillsViewportHeight(true);
-        panel.add(scrollPane, BorderLayout.CENTER);
+        super(system, title);
     }
 
-    abstract public void updateAppointmentsTable();
+    @Override
+    public void setModel(JTable appointmentsTable) {
+        appointmentsTableModel = new AppointmentsTableModel();
+        appointmentsTable.setModel(appointmentsTableModel);
+    }
 
-    abstract protected void createTechnicianAppointmentWindow(Appointment appointment);
+    @Override
+    public void goToItem(int modelRow) {
+        Appointment appointment = appointmentsTableModel.appointments.get(modelRow);
+        createItemWindow(appointment);
+    }
+
+    abstract protected void createItemWindow(Appointment appointment);
 
     public JPanel getPanel() {
         return panel;

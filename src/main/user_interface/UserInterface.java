@@ -78,7 +78,7 @@ public class UserInterface {
 
     public void showPanel(String panelName) {
         if (panelName.equals("technician")) {
-            technicianPanel.updateAppointmentsTable();
+            technicianPanel.updateItemsTable();
         }
         if (panelName.equals("centreManager")) {
             centreManagerCard.showPanel("centreManager");
