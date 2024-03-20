@@ -1,5 +1,6 @@
 package main.user_interface;
 
+import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
@@ -14,8 +15,15 @@ public class UserManagement extends TablePanel {
     private Map<String, User> users;
     private UserTableModel userTableModel;
 
-    public UserManagement(AHHASCSystem system) {
+    public UserManagement(CentreManagerCard centreManagerCard, AHHASCSystem system) {
         super(system, "Users", 2);
+
+        // Back button
+        JButton createBackButton = new JButton("Back");
+        createBackButton.addActionListener(e -> {
+            centreManagerCard.showPanel("centreManager");
+        });
+        titleButtonPanel.add(createBackButton, 0);
     }
 
     @Override

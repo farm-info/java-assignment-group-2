@@ -21,7 +21,7 @@ public class CentreManagerCard extends javax.swing.JPanel {
         CentreManagerPanel centreManagerPanel = new CentreManagerPanel(this, userInterface, system);
         appointmentPanel = new CentreManagerAppointmentPanel(this, system);
         customerManagement = new CustomerManagement(this, system);
-        userManagement = new UserManagement(system);
+        userManagement = new UserManagement(this, system);
         // WONTFIX this is inconsistent
         this.add(centreManagerPanel, "centreManager");
         this.add(customerManagement, "customerManagement");
