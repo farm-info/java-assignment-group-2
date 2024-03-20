@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.print.Book;
 
 import main.system.*;
 
@@ -14,7 +15,7 @@ class CentreManagerAppointmentPanel extends AppointmentsPanel {
         // Book appointment
         JButton createAppointmentButton = new JButton("Book appointment");
         createAppointmentButton.addActionListener(e -> {
-            BookAppointment window = new BookAppointment(system);
+            BookAppointment window = new BookAppointment(this, system);
             window.setVisible(true);
         });
         titleButtonPanel.add(createAppointmentButton);
@@ -28,7 +29,7 @@ class CentreManagerAppointmentPanel extends AppointmentsPanel {
 
     @Override
     protected void createTechnicianAppointmentWindow(Appointment appointment) {
-        AppointmentWindow window = new CentreManagerAppointmentWindow(appointment, system);
+        AppointmentWindow window = new CentreManagerAppointmentWindow(this, appointment, system);
         window.setVisible(true);
     }
 
@@ -44,8 +45,13 @@ class CentreManagerAppointmentPanel extends AppointmentsPanel {
  * - delete appointment
  */
 class CentreManagerAppointmentWindow extends AppointmentWindow {
-    public CentreManagerAppointmentWindow(Appointment appointment, AHHASCSystem system) {
+    private CentreManagerAppointmentPanel centreManagerAppointmentPanel;
+
+    public CentreManagerAppointmentWindow(CentreManagerAppointmentPanel centreManagerAppointmentPanel,
+            Appointment appointment,
+            AHHASCSystem system) {
         super(appointment, system);
+        this.centreManagerAppointmentPanel = centreManagerAppointmentPanel;
     }
 
     @Override
@@ -77,6 +83,7 @@ class CentreManagerAppointmentWindow extends AppointmentWindow {
         confirmButton.addActionListener(e -> {
             system.removeAppointment(appointment.getId());
             system.saveData();
+            centreManagerAppointmentPanel.updateAppointmentsTable();
             frame.dispose();
             confirmationFrame.dispose();
         });

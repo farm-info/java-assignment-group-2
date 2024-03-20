@@ -24,17 +24,18 @@ public class BookAppointment extends JFrame implements ActionListener {
     private JComboBox<String> customerComboBox, technicianComboBox;
     private JFormattedTextField paymentAmountField, datePicker;
 
+    private CentreManagerAppointmentPanel centreManagerAppointmentPanel;
     private AHHASCSystem system;
     private Map<String, Customer> customers;
     private List<Technician> technicians;
 
     public BookAppointment(AHHASCSystem system, Customer customer) {
         // TODO constructor where the combo box is pre-filled with the customer's name
-        this(system);
     }
 
-    public BookAppointment(AHHASCSystem system) {
+    public BookAppointment(CentreManagerAppointmentPanel centreManagerAppointmentPanel, AHHASCSystem system) {
         this.system = system;
+        this.centreManagerAppointmentPanel = centreManagerAppointmentPanel;
 
         setTitle("Book Appointment");
         setSize(800, 700);
@@ -134,6 +135,7 @@ public class BookAppointment extends JFrame implements ActionListener {
         // Interact with backend
         system.addAppointment(customer, technicianId, date, new BigDecimal(paymentAmount));
         system.saveData();
+        centreManagerAppointmentPanel.updateAppointmentsTable();
 
         // Success message
         String message = "Your appointment has been booked successfully!";
