@@ -2,7 +2,7 @@ package main.user_interface;
 
 import main.system.AHHASCSystem;
 
-public class CustomerManagement extends javax.swing.JFrame {
+public class CustomerManagement extends javax.swing.JPanel {
 
     /**
      * Creates new form UserManagement
@@ -28,8 +28,6 @@ public class CustomerManagement extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
 
         jButton2.setText("jButton2");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][] {
@@ -76,8 +74,8 @@ public class CustomerManagement extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -106,8 +104,6 @@ public class CustomerManagement extends javax.swing.JFrame {
                                         .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 33,
                                                 Short.MAX_VALUE))
                                 .addGap(5, 5, 5)));
-
-        pack();
     }// </editor-fold>
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {
