@@ -64,10 +64,11 @@ public class UserInterface {
         loginPanel = new LoginPanel(this, system, frame);
         registerPanel = new RegisterPanel(this, system, frame);
         technicianPanel = new TechnicianPanel(this, system);
+        CentreManagerPanel centreManagerPanel = new CentreManagerPanel(this, system);
         centerPanel.add(loginPanel.getPanel(), "login");
         centerPanel.add(registerPanel.getPanel(), "register");
         centerPanel.add(technicianPanel.getPanel(), "technician");
-        centerPanel.add(new centreManagerPanel(), "centreManager");
+        centerPanel.add(centreManagerPanel, "centreManager");
 
         frame.setContentPane(centerPanel);
 

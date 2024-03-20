@@ -2,12 +2,20 @@ package main.user_interface;
 
 import java.awt.AWTEvent;
 
-public class centreManagerPanel extends javax.swing.JPanel {
+import javax.swing.JButton;
+
+import main.system.AHHASCSystem;
+
+public class CentreManagerPanel extends javax.swing.JPanel {
+        private AHHASCSystem system;
+        private UserInterface userInterface;
 
         /**
          * Creates new form centreManagerPanel
          */
-        public centreManagerPanel() {
+        public CentreManagerPanel(UserInterface userInterface, AHHASCSystem system) {
+                this.system = system;
+                this.userInterface = userInterface;
                 initComponents();
         }
 
@@ -33,28 +41,33 @@ public class centreManagerPanel extends javax.swing.JPanel {
                 jButton1.setText("Edit Profile");
                 jButton1.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jButton1ActionPerformed(evt);
+                                editProfileActionPerformed(evt);
                         }
                 });
 
-                jButton2.setText("Log Out");
+                JButton jButton2 = new LogoutButton(userInterface, system).getLogoutButton();
 
                 jButton4.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
                 jButton4.setText("Manage Users");
                 jButton4.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jButton4ActionPerformed(evt);
+                                manageUsersActionPerformed(evt);
                         }
                 });
 
                 jButton3.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
                 jButton3.setText("Manage Appointments");
+                jButton3.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                manageAppointmentsActionPerformed(evt);
+                        }
+                });
 
                 jButton5.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
                 jButton5.setText("Manage Customers");
                 jButton5.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jButton5ActionPerformed(evt);
+                                manageCustomersActionPerformed(evt);
                         }
                 });
 
@@ -135,15 +148,19 @@ public class centreManagerPanel extends javax.swing.JPanel {
                                                                 .addContainerGap(74, Short.MAX_VALUE)));
         }// </editor-fold>
 
-        private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        private void editProfileActionPerformed(java.awt.event.ActionEvent evt) {
                 // TODO add your handling code here:
         }
 
-        private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
+        private void manageUsersActionPerformed(java.awt.event.ActionEvent evt) {
                 // TODO add your handling code here:
         }
 
-        private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {
+        private void manageCustomersActionPerformed(java.awt.event.ActionEvent evt) {
+                // TODO add your handling code here:
+        }
+
+        private void manageAppointmentsActionPerformed(java.awt.event.ActionEvent evt) {
                 // TODO add your handling code here:
         }
 
