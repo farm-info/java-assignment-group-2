@@ -9,13 +9,15 @@ import main.system.AHHASCSystem;
 public class CentreManagerPanel extends javax.swing.JPanel {
         private AHHASCSystem system;
         private UserInterface userInterface;
+        private CentreManagerCard centreManagerCard;
 
         /**
          * Creates new form centreManagerPanel
          */
-        public CentreManagerPanel(UserInterface userInterface, AHHASCSystem system) {
+        public CentreManagerPanel(CentreManagerCard centreManagerCard, UserInterface userInterface,
+                        AHHASCSystem system) {
                 this.system = system;
-                this.userInterface = userInterface;
+                this.centreManagerCard = centreManagerCard;
                 initComponents();
         }
 
@@ -161,7 +163,7 @@ public class CentreManagerPanel extends javax.swing.JPanel {
         }
 
         private void manageAppointmentsActionPerformed(java.awt.event.ActionEvent evt) {
-                // TODO add your handling code here:
+                centreManagerCard.showPanel("appointments");
         }
 
         // Variables declaration - do not modify

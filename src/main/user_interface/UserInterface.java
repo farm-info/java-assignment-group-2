@@ -16,6 +16,7 @@ public class UserInterface {
     private LoginPanel loginPanel;
     private RegisterPanel registerPanel;
     private TechnicianPanel technicianPanel;
+    private CentreManagerCard centreManagerCard;
 
     private AHHASCSystem system;
 
@@ -64,11 +65,11 @@ public class UserInterface {
         loginPanel = new LoginPanel(this, system, frame);
         registerPanel = new RegisterPanel(this, system, frame);
         technicianPanel = new TechnicianPanel(this, system);
-        CentreManagerPanel centreManagerPanel = new CentreManagerPanel(this, system);
+        centreManagerCard = new CentreManagerCard(this, system);
         centerPanel.add(loginPanel.getPanel(), "login");
         centerPanel.add(registerPanel.getPanel(), "register");
         centerPanel.add(technicianPanel.getPanel(), "technician");
-        centerPanel.add(centreManagerPanel, "centreManager");
+        centerPanel.add(centreManagerCard, "centreManager");
 
         frame.setContentPane(centerPanel);
 
@@ -78,6 +79,8 @@ public class UserInterface {
     public void showPanel(String panelName) {
         if (panelName.equals("technician")) {
             technicianPanel.updateAppointmentsTable();
+        } else if (panelName.equals("centreManager")) {
+            centreManagerCard.showPanel("centreManager");
         }
         cardLayout.show(centerPanel, panelName);
         frame.pack();

@@ -8,7 +8,7 @@ import java.awt.*;
 import main.system.*;
 
 class CentreManagerAppointmentPanel extends AppointmentsPanel {
-    public CentreManagerAppointmentPanel(UserInterface userInterface, AHHASCSystem system) {
+    public CentreManagerAppointmentPanel(AHHASCSystem system) {
         super(system, "All appointments");
 
         // Book appointment
