@@ -236,5 +236,6 @@ class AppointmentsTableModel extends AbstractTableModel {
 
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
+        this.fireTableDataChanged();
     }
 }

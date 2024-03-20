@@ -7,6 +7,7 @@ public class CentreManagerCard extends javax.swing.JPanel {
     private AHHASCSystem system;
     private UserInterface userInterface;
     private CardLayout cardLayout;
+    private CentreManagerAppointmentPanel appointmentPanel;
 
     public CentreManagerCard(UserInterface userInterface, AHHASCSystem system) {
         this.system = system;
@@ -16,12 +17,16 @@ public class CentreManagerCard extends javax.swing.JPanel {
 
         // TODO add the other two panels
         CentreManagerPanel centreManagerPanel = new CentreManagerPanel(this, userInterface, system);
-        CentreManagerAppointmentPanel AppointmentPanel = new CentreManagerAppointmentPanel(system);
-        this.add(AppointmentPanel.getPanel(), "appointments");
+        appointmentPanel = new CentreManagerAppointmentPanel(system);
+        this.add(appointmentPanel.getPanel(), "appointments");
         this.add(centreManagerPanel, "centreManager");
     }
 
     public void showPanel(String layoutName) {
         cardLayout.show(this, layoutName);
+    }
+
+    public void updateAppointmentsTable() {
+        appointmentPanel.updateAppointmentsTable();
     }
 }
