@@ -18,6 +18,7 @@ public class CentreManagerCard extends javax.swing.JPanel {
         // TODO add the other two panels
         CentreManagerPanel centreManagerPanel = new CentreManagerPanel(this, userInterface, system);
         appointmentPanel = new CentreManagerAppointmentPanel(this, system);
+        CustomerManagement customerManagement = new CustomerManagement(this, system);
         this.add(appointmentPanel.getPanel(), "appointments");
         this.add(centreManagerPanel, "centreManager");
     }

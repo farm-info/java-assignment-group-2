@@ -99,7 +99,7 @@ public class AHHASCSystem {
         return newUser;
     }
 
-    public Map<String, User> getUsers() {
+    public Map<String, User> getAllUsers() {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
             System.out.println("Permission denied: Get user list");
             return null;

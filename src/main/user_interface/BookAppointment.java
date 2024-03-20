@@ -60,7 +60,7 @@ public class BookAppointment extends JFrame implements ActionListener {
         technicianLabel.setBounds(50, 230, 150, 25);
         add(technicianLabel);
 
-        Map<String, User> users = system.getUsers();
+        Map<String, User> users = system.getAllUsers();
         technicians = users.values().stream().filter(user -> user.getRole() == User.Role.TECHNICIAN)
                 .map(user -> (Technician) user).collect(Collectors.toList());
         String[] technicianNames = new String[technicians.size()];
