@@ -9,8 +9,15 @@ import java.awt.print.Book;
 import main.system.*;
 
 class CentreManagerAppointmentPanel extends AppointmentsPanel {
-    public CentreManagerAppointmentPanel(AHHASCSystem system) {
+    public CentreManagerAppointmentPanel(CentreManagerCard centreManagerCard, AHHASCSystem system) {
         super(system, "All appointments");
+
+        // Back button
+        JButton createBackButton = new JButton("Back");
+        createBackButton.addActionListener(e -> {
+            centreManagerCard.showPanel("centreManager");
+        });
+        titleButtonPanel.add(createBackButton, 0);
 
         // Book appointment
         JButton createAppointmentButton = new JButton("Book appointment");
