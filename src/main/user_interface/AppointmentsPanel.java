@@ -34,7 +34,7 @@ abstract class AppointmentsPanel {
         titleButtonPanel = new JPanel(new FlowLayout());
 
         // Update table button
-        JButton updateButton = new JButton("Update");
+        JButton updateButton = new JButton("Update table");
         updateButton.addActionListener(e -> {
             updateAppointmentsTable();
         });
