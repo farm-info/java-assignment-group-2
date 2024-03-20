@@ -152,14 +152,15 @@ public class CentreManagerPanel extends javax.swing.JPanel {
 
         private void editProfileActionPerformed(java.awt.event.ActionEvent evt) {
                 // TODO add your handling code here:
+                // TODO add this button (and logout) for technicians
         }
 
         private void manageUsersActionPerformed(java.awt.event.ActionEvent evt) {
-                // TODO add your handling code here:
+                centreManagerCard.showPanel("userManagement");
         }
 
         private void manageCustomersActionPerformed(java.awt.event.ActionEvent evt) {
-                // TODO add your handling code here:
+                centreManagerCard.showPanel("customerManagement");
         }
 
         private void manageAppointmentsActionPerformed(java.awt.event.ActionEvent evt) {
