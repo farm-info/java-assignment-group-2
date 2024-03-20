@@ -17,9 +17,11 @@ abstract class TablePanel {
     protected JPanel panel;
     protected AHHASCSystem system;
     protected JPanel titleButtonPanel;
+    protected int buttonColumnIndex;
 
-    public TablePanel(AHHASCSystem system, String title) {
+    public TablePanel(AHHASCSystem system, String title, int buttonColumnIndex) {
         this.system = system;
+        this.buttonColumnIndex = buttonColumnIndex;
 
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -50,7 +52,7 @@ abstract class TablePanel {
             }
         };
 
-        ButtonColumn buttonColumn = new ButtonColumn(itemsTable, goToItem, 8);
+        ButtonColumn buttonColumn = new ButtonColumn(itemsTable, goToItem, buttonColumnIndex);
         buttonColumn.setMnemonic(KeyEvent.VK_D);
 
         JScrollPane scrollPane = new JScrollPane(itemsTable);

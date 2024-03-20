@@ -20,7 +20,7 @@ abstract class AppointmentsPanel extends TablePanel {
     protected AppointmentsTableModel appointmentsTableModel;
 
     public AppointmentsPanel(AHHASCSystem system, String title) {
-        super(system, title);
+        super(system, title, 8);
     }
 
     @Override
