@@ -15,7 +15,7 @@ import main.system.*;
  */
 class TechnicianPanel extends AppointmentsPanel {
     public TechnicianPanel(UserInterface userInterface, AHHASCSystem system) {
-        super(userInterface, system, "Your appointments");
+        super(system, "Your appointments");
     }
 
     @Override

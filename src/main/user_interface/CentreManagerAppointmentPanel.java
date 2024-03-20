@@ -9,7 +9,7 @@ import main.system.*;
 
 class CentreManagerAppointmentPanel extends AppointmentsPanel {
     public CentreManagerAppointmentPanel(UserInterface userInterface, AHHASCSystem system) {
-        super(userInterface, system, "All appointments");
+        super(system, "All appointments");
 
         // Book appointment
         JButton createAppointmentButton = new JButton("Book appointment");

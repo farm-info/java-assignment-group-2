@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.text.*;
 import javax.swing.table.AbstractTableModel;
 
 import main.system.AHHASCSystem;
@@ -22,7 +21,7 @@ abstract class AppointmentsPanel {
     protected AppointmentsTableModel appointmentsTableModel;
     protected JPanel titleButtonPanel;
 
-    public AppointmentsPanel(UserInterface userInterface, AHHASCSystem system, String title) {
+    public AppointmentsPanel(AHHASCSystem system, String title) {
         this.system = system;
 
         panel = new JPanel();
@@ -62,12 +61,6 @@ abstract class AppointmentsPanel {
         JScrollPane scrollPane = new JScrollPane(appointmentsTable);
         appointmentsTable.setFillsViewportHeight(true);
         panel.add(scrollPane, BorderLayout.CENTER);
-
-        // Logout button
-        JPanel logoutPanel = new JPanel(new BorderLayout());
-        JButton logoutButton = new LogoutButton(userInterface, system).getLogoutButton();
-        logoutPanel.add(logoutButton, BorderLayout.EAST);
-        panel.add(logoutPanel, BorderLayout.SOUTH);
     }
 
     abstract public void updateAppointmentsTable();
