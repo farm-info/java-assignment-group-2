@@ -145,8 +145,4 @@ public class BookAppointment extends JFrame implements ActionListener {
         paymentAmountField.setText("");
         datePicker.setText("");
     }
-
-    public static void main(String[] args) throws IOException, ItemNotFoundException {
-        new BookAppointment(new AHHASCSystem());
-    }
 }
