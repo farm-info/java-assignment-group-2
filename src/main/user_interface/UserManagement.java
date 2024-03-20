@@ -15,7 +15,7 @@ public class UserManagement extends TablePanel {
     private UserTableModel userTableModel;
 
     public UserManagement(AHHASCSystem system) {
-        super(system, "Appointments", 2);
+        super(system, "Users", 2);
     }
 
     @Override
