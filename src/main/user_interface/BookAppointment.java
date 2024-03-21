@@ -29,9 +29,9 @@ public class BookAppointment extends JFrame implements ActionListener {
     private Map<String, Customer> customers;
     private List<Technician> technicians;
 
-    public BookAppointment(AHHASCSystem system, Customer customer) {
-        // TODO constructor where the combo box is pre-filled with the customer's name
-    }
+    // TODO constructor where the combo box is pre-filled with the customer's name
+    // public BookAppointment(AHHASCSystem system, Customer customer) {
+    // }
 
     public BookAppointment(CentreManagerAppointmentPanel centreManagerAppointmentPanel, AHHASCSystem system) {
         this.system = system;
