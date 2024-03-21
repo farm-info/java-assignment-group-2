@@ -4,12 +4,12 @@ import java.util.*;
 import java.util.List;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-
-import java.awt.*;
+import java.time.LocalDate;
 
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.table.AbstractTableModel;
+import java.awt.*;
 
 import main.system.*;
 
@@ -151,17 +151,22 @@ abstract class AppointmentWindow {
     }
 
     private void saveAppointment() {
-        String feedback = feedbackTextField.getText();
-        system.setAppointmentFeedback(appointment, feedback);
-
         try {
             BigDecimal newPaymentAmount = new BigDecimal(paymentAmountField.getText());
-            system.setAppointmentPayment(appointment, newPaymentAmount, paymentStatusBox.isSelected());
+            Boolean paymentStatus = paymentStatusBox.isSelected();
+            system.setAppointmentPayment(appointment, newPaymentAmount, paymentStatus);
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(frame, "Invalid payment amount.");
             return;
         }
+
+        String feedback = feedbackTextField.getText();
+        system.setAppointmentFeedback(appointment, feedback);
+
+        String appointmentDateString = appointmentDateField.getText();
+        LocalDate appointmentDate = LocalDate.parse(appointmentDateString);
+        system.setAppointmentDate(appointment, appointmentDate);
 
         appointmentsPanel.refreshItemsTable();
         JOptionPane.showMessageDialog(frame, "Appointment updated successfully.");

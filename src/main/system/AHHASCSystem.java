@@ -239,7 +239,7 @@ public class AHHASCSystem {
     }
 
     public Boolean setAppointmentPayment(Appointment appointment, BigDecimal paymentAmount, Boolean paymentStatus) {
-        if (!hasCurrentUserPermission(User.Role.TECHNICIAN)) {
+        if (!(hasCurrentUserPermission(User.Role.TECHNICIAN) || hasCurrentUserPermission(User.Role.CENTRE_MANAGER))) {
             System.out.println("Permission denied: Collect payment");
             return false;
         }
@@ -258,5 +258,15 @@ public class AHHASCSystem {
 
         appointment.setFeedback(feedback);
         System.out.println("Feedback entered for appointment.");
+    }
+
+    public void setAppointmentDate(Appointment appointment, LocalDate appointmentDate) {
+        if (!(hasCurrentUserPermission(User.Role.TECHNICIAN) || hasCurrentUserPermission(User.Role.CENTRE_MANAGER))) {
+            System.out.println("Permission denied: Change appointment date");
+            return;
+        }
+
+        appointment.setAppointmentDate(appointmentDate);
+        System.out.println("Appointment date changed.");
     }
 }
