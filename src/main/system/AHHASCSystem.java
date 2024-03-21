@@ -222,26 +222,43 @@ public class AHHASCSystem {
         return technicianAppointments;
     }
 
-    public Boolean setAppointmentPayment(String appointmentId, BigDecimal paymentAmount, Boolean paymentStatus) {
+    // TODO remove?
+    public Boolean setAppointment(String appointmentId, Customer customer, Technician technician,
+            LocalDate appointmentDate,
+            BigDecimal paymentAmount) {
+        if (!hasCurrentUserPermission(User.Role.TECHNICIAN)) {
+            System.out.println("Permission denied: Set appointment");
+            return false;
+        }
+
+        Appointment appointment = appointments.get(appointmentId);
+        appointment.setCustomer(customer);
+        appointment.setTechnician(technician);
+        appointment.setAppointmentDate(appointmentDate);
+        appointment.setPaymentAmount(paymentAmount);
+        System.out.println("Appointment updated successfully.");
+        return true;
+    }
+
+    // TODO test
+    public Boolean setAppointmentPayment(Appointment appointment, BigDecimal paymentAmount, Boolean paymentStatus) {
         if (!hasCurrentUserPermission(User.Role.TECHNICIAN)) {
             System.out.println("Permission denied: Collect payment");
             return false;
         }
 
-        Appointment appointment = appointments.get(appointmentId);
         appointment.setPaymentAmount(paymentAmount);
         appointment.setPaymentStatus(paymentStatus);
         System.out.println("Payment collected for appointment.");
         return true;
     }
 
-    public void setAppointmentFeedback(String appointmentId, String feedback) {
+    public void setAppointmentFeedback(Appointment appointment, String feedback) {
         if (!(hasCurrentUserPermission(User.Role.TECHNICIAN) || hasCurrentUserPermission(User.Role.CENTRE_MANAGER))) {
             System.out.println("Permission denied: Enter feedback");
             return;
         }
 
-        Appointment appointment = appointments.get(appointmentId);
         appointment.setFeedback(feedback);
         System.out.println("Feedback entered for appointment.");
     }
