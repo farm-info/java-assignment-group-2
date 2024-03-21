@@ -42,6 +42,7 @@ abstract class TablePanel extends JPanel {
         // Table of items
         JTable itemsTable = new JTable();
         setModel(itemsTable);
+        itemsTable.setRowHeight(25);
 
         Action goToItem = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
