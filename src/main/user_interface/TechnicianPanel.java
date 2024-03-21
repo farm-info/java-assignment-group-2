@@ -16,6 +16,21 @@ import main.system.*;
 class TechnicianPanel extends AppointmentsPanel {
     public TechnicianPanel(UserInterface userInterface, AHHASCSystem system) {
         super(system, "Your appointments");
+
+        // Logout button
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.addActionListener(e -> {
+            system.logout();
+            userInterface.showPanel("login");
+        });
+        titleButtonPanel.add(logoutButton, 0);
+
+        // TODO Change password
+        JButton changePasswordButton = new JButton("Change password");
+        changePasswordButton.addActionListener(e -> {
+            userInterface.showPanel("changePassword");
+        });
+        titleButtonPanel.add(changePasswordButton, 1);
     }
 
     @Override
