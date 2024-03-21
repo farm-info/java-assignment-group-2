@@ -1,9 +1,11 @@
 package main.user_interface;
 
+import javax.swing.*;
+
 import java.awt.CardLayout;
 import main.system.AHHASCSystem;
 
-public class CentreManagerCard extends javax.swing.JPanel {
+public class CentreManagerCard extends JPanel {
     private AHHASCSystem system;
     private UserInterface userInterface;
     private CardLayout cardLayout;
@@ -17,16 +19,14 @@ public class CentreManagerCard extends javax.swing.JPanel {
         this.cardLayout = new CardLayout();
         setLayout(cardLayout);
 
-        // TODO add the other two panels
         CentreManagerPanel centreManagerPanel = new CentreManagerPanel(this, userInterface, system);
         appointmentPanel = new CentreManagerAppointmentPanel(this, system);
         customerManagement = new CustomerManagement(this, system);
         userManagement = new UserManagement(this, system);
-        // WONTFIX this is inconsistent
         this.add(centreManagerPanel, "centreManager");
         this.add(customerManagement, "customerManagement");
-        this.add(userManagement.getPanel(), "userManagement");
-        this.add(appointmentPanel.getPanel(), "appointments");
+        this.add(userManagement, "userManagement");
+        this.add(appointmentPanel, "appointments");
     }
 
     public void showPanel(String layoutName) {
@@ -36,8 +36,7 @@ public class CentreManagerCard extends javax.swing.JPanel {
         } else if (layoutName.equals("userManagement")) {
             userManagement.updateItemsTable();
         } else if (layoutName.equals("customerManagement")) {
-            // TODO
-            // customerManagement.updateItemsTable();
+            customerManagement.updateItemsTable();
         }
     }
 

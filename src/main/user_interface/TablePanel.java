@@ -13,7 +13,7 @@ import javax.swing.table.AbstractTableModel;
 
 import main.system.*;
 
-abstract class TablePanel {
+abstract class TablePanel extends JPanel {
     protected JPanel panel;
     protected AHHASCSystem system;
     protected JPanel titleButtonPanel;
@@ -23,8 +23,15 @@ abstract class TablePanel {
         this.system = system;
         this.buttonColumnIndex = buttonColumnIndex;
 
+        setLayout(new BorderLayout());
+        add(new JPanel(), BorderLayout.WEST);
+        add(new JPanel(), BorderLayout.EAST);
+        add(new JPanel(), BorderLayout.SOUTH);
+        add(new JPanel(), BorderLayout.NORTH);
+
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
+        add(panel, BorderLayout.CENTER);
 
         // Title
         JPanel titlePanel = new TitlePanel(title);
@@ -65,8 +72,4 @@ abstract class TablePanel {
     abstract public void goToItem(int modelRow);
 
     abstract public void updateItemsTable();
-
-    public JPanel getPanel() {
-        return panel;
-    }
 }
