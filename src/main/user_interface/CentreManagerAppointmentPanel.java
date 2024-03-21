@@ -31,7 +31,7 @@ class CentreManagerAppointmentPanel extends AppointmentsPanel {
     }
 
     @Override
-    public void updateItemsTable() {
+    public void refreshItemsTable() {
         assignedAppointments = system.getAllAppointments();
         appointmentsTableModel.setAppointments(new ArrayList<>(assignedAppointments.values()));
     }
@@ -90,7 +90,7 @@ class CentreManagerAppointmentWindow extends AppointmentWindow {
         confirmButton.addActionListener(e -> {
             system.removeAppointment(appointment.getId());
             system.saveData();
-            centreManagerAppointmentPanel.updateItemsTable();
+            centreManagerAppointmentPanel.refreshItemsTable();
             frame.dispose();
             confirmationFrame.dispose();
         });

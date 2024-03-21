@@ -167,7 +167,7 @@ abstract class AppointmentWindow {
             return;
         }
 
-        appointmentsPanel.updateItemsTable();
+        appointmentsPanel.refreshItemsTable();
         JOptionPane.showMessageDialog(frame, "Appointment updated successfully.");
         frame.dispose();
     }

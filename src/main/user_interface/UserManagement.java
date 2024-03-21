@@ -40,7 +40,7 @@ public class UserManagement extends TablePanel {
     }
 
     @Override
-    public void updateItemsTable() {
+    public void refreshItemsTable() {
         users = system.getAllUsers();
         userTableModel.setUsers(new ArrayList<>(users.values()));
     }
@@ -54,7 +54,7 @@ public class UserManagement extends TablePanel {
     public void goToItem(int modelRow) {
         User user = userTableModel.users.get(modelRow);
         system.removeUser(user.getId());
-        updateItemsTable();
+        refreshItemsTable();
     }
 }
 

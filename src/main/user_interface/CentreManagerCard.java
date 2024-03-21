@@ -28,15 +28,15 @@ public class CentreManagerCard extends JPanel {
     public void showPanel(String layoutName) {
         cardLayout.show(this, layoutName);
         if (layoutName.equals("appointments")) {
-            appointmentPanel.updateItemsTable();
+            appointmentPanel.refreshItemsTable();
         } else if (layoutName.equals("userManagement")) {
-            userManagement.updateItemsTable();
+            userManagement.refreshItemsTable();
         } else if (layoutName.equals("customerManagement")) {
-            customerManagement.updateItemsTable();
+            customerManagement.refreshItemsTable();
         }
     }
 
-    public void updateAppointmentsTable() {
-        appointmentPanel.updateItemsTable();
+    public void refreshAppointmentsTable() {
+        appointmentPanel.refreshItemsTable();
     }
 }

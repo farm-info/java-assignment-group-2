@@ -96,7 +96,7 @@ abstract class CustomerWindow extends JFrame {
             saveCustomer();
 
             system.saveData();
-            customerManagement.updateItemsTable();
+            customerManagement.refreshItemsTable();
             dispose();
         });
         bottomPanel.add(saveButton);
@@ -146,7 +146,7 @@ class EditCustomerWindow extends CustomerWindow {
         JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(e -> {
             system.removeCustomer(customer.getId());
-            customerManagement.updateItemsTable();
+            customerManagement.refreshItemsTable();
             confirmationFrame.dispose();
             dispose();
         });

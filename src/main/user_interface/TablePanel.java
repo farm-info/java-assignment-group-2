@@ -24,12 +24,12 @@ abstract class TablePanel extends JPanel {
         // Title button panel
         titleButtonPanel = new JPanel(new FlowLayout());
 
-        // Update table button
-        JButton updateButton = new JButton("Update table");
-        updateButton.addActionListener(e -> {
-            updateItemsTable();
+        // Refresh table button
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener(e -> {
+            refreshItemsTable();
         });
-        titleButtonPanel.add(updateButton, BorderLayout.EAST);
+        titleButtonPanel.add(refreshButton, BorderLayout.EAST);
         titlePanel.add(titleButtonPanel, BorderLayout.EAST);
         add(titlePanel, BorderLayout.NORTH);
 
@@ -57,5 +57,5 @@ abstract class TablePanel extends JPanel {
 
     abstract public void goToItem(int modelRow);
 
-    abstract public void updateItemsTable();
+    abstract public void refreshItemsTable();
 }

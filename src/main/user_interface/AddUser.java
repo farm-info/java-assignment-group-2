@@ -98,7 +98,7 @@ public class AddUser extends JFrame {
 
         JFrame frame = new JFrame();
         JOptionPane.showMessageDialog(frame, "User added successfully.");
-        userManagement.updateItemsTable();
+        userManagement.refreshItemsTable();
         dispose();
     }
 }

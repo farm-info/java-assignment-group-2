@@ -45,7 +45,7 @@ public class CustomerManagement extends TablePanel {
         window.setVisible(true);
     }
 
-    public void updateItemsTable() {
+    public void refreshItemsTable() {
         customers = system.getAllCustomers();
         CustomerTableModel.setCustomers(new ArrayList<>(customers.values()));
     }
