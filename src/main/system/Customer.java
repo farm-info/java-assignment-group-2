@@ -30,6 +30,18 @@ public class Customer extends BaseItem {
         return contactEmail;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
+
     public String toString() {
         return getId() + "," + name + "," + contactNumber + "," + contactEmail;
     }
