@@ -78,9 +78,9 @@ abstract class AppointmentWindow {
         frame = new JFrame("Appointment Details");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600, 400);
-        this.nestedPanel = new JPanel(new BorderLayout());
-        this.panel = new JPanel(new BorderLayout());
-        this.panel.add(nestedPanel, BorderLayout.CENTER);
+        nestedPanel = new JPanel(new BorderLayout());
+        panel = new JPanel(new BorderLayout());
+        panel.add(nestedPanel, BorderLayout.CENTER);
     }
 
     private void createTitlePanel() {
