@@ -167,13 +167,12 @@ public class AHHASCSystem {
     }
 
     // customer manaaement
-    public Customer addCustomer(String name, String contactDetails, String contactEmail) {
+    public Customer addCustomer(Customer newCustomer) {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
             System.out.println("Permission denied: Add customer");
             return null;
         }
 
-        Customer newCustomer = new Customer(name, contactDetails, contactEmail);
         customers.put(newCustomer.getId(), newCustomer);
         System.out.println("Customer added successfully.");
         return newCustomer;
