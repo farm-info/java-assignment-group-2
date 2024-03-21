@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import main.system.AHHASCSystem;
 import main.system.User;
+import main.system.UserNameAlreadyExistsException;
 
 class LoginPanel {
     private JPanel panel;
@@ -92,19 +93,36 @@ class RegisterPanel {
             String username = usernameField.getText();
             String password = String.valueOf(passwordField.getPassword());
 
-            User success = system.addUser(username, password, User.Role.TECHNICIAN);
-            if (success != null) {
-                JOptionPane.showMessageDialog(frame, "Registration successful!", "Success",
+            User newUser;
+            try {
+                newUser = system.addUser(username, password, User.Role.TECHNICIAN);
+
+            } catch (UserNameAlreadyExistsException e1) {
+                JOptionPane.showMessageDialog(
+                        frame,
+                        "User already exists",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (newUser == null) {
+                JOptionPane.showMessageDialog(
+                        frame,
+                        "Registration failed",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+
+            } else {
+                JOptionPane.showMessageDialog(
+                        frame,
+                        "Registration successful!",
+                        "Success",
                         JOptionPane.INFORMATION_MESSAGE);
                 userInterface.showPanel("login");
-
                 // clear username and password fields
                 usernameField.setText("");
                 passwordField.setText("");
-
-            } else {
-                JOptionPane.showMessageDialog(frame, "Registration failed: ", "Error",
-                        JOptionPane.ERROR_MESSAGE);
             }
         });
         panel.add(registerButton);

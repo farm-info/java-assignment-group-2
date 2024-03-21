@@ -66,7 +66,7 @@ public class AHHASCSystem {
     }
 
     // user management
-    public User addUser(String username, String password, User.Role role) {
+    public User addUser(String username, String password, User.Role role) throws UserNameAlreadyExistsException {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
             System.out.println("Permission denied: Get user list");
             return null;
@@ -75,7 +75,7 @@ public class AHHASCSystem {
         boolean usernameExists = users.containsKey(username);
         if (usernameExists) {
             System.out.println("Username already exists.");
-            return null;
+            throw new UserNameAlreadyExistsException("Username already exists.");
         }
 
         User newUser = null;

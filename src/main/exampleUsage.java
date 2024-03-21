@@ -8,7 +8,7 @@ import main.data_access.ItemNotFoundException;
 import main.system.*;
 
 public class exampleUsage {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UserNameAlreadyExistsException {
         // Example usage of the AHHASC system
         AHHASCSystem system;
         try {
