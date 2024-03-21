@@ -124,12 +124,16 @@ class RegisterPanel {
 
 class LogoutButton {
     private JButton logoutButton;
+    private AHHASCSystem system;
+    private UserInterface userInterface;
 
     public LogoutButton(UserInterface userInterface, AHHASCSystem system) {
+        this.system = system;
+        this.userInterface = userInterface;
         logoutButton = new JButton("Logout");
         logoutButton.addActionListener(e -> {
-            system.logout();
-            userInterface.showPanel("login");
+            this.system.logout();
+            this.userInterface.showPanel("login");
         });
     }
 

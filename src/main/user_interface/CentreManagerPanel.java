@@ -7,17 +7,18 @@ import javax.swing.JButton;
 import main.system.AHHASCSystem;
 
 public class CentreManagerPanel extends javax.swing.JPanel {
-        private AHHASCSystem system;
-        private UserInterface userInterface;
         private CentreManagerCard centreManagerCard;
+        private UserInterface userInterface;
+        private AHHASCSystem system;
 
         /**
          * Creates new form centreManagerPanel
          */
         public CentreManagerPanel(CentreManagerCard centreManagerCard, UserInterface userInterface,
                         AHHASCSystem system) {
-                this.system = system;
                 this.centreManagerCard = centreManagerCard;
+                this.userInterface = userInterface;
+                this.system = system;
                 initComponents();
         }
 
