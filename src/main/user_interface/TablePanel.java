@@ -22,16 +22,7 @@ abstract class TablePanel extends JPanel {
     public TablePanel(AHHASCSystem system, String title, int buttonColumnIndex) {
         this.system = system;
         this.buttonColumnIndex = buttonColumnIndex;
-
         setLayout(new BorderLayout());
-        add(new JPanel(), BorderLayout.WEST);
-        add(new JPanel(), BorderLayout.EAST);
-        add(new JPanel(), BorderLayout.SOUTH);
-        add(new JPanel(), BorderLayout.NORTH);
-
-        panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        add(panel, BorderLayout.CENTER);
 
         // Title
         JPanel titlePanel = new TitlePanel(title);
@@ -46,7 +37,7 @@ abstract class TablePanel extends JPanel {
         });
         titleButtonPanel.add(updateButton, BorderLayout.EAST);
         titlePanel.add(titleButtonPanel, BorderLayout.EAST);
-        panel.add(titlePanel, BorderLayout.NORTH);
+        add(titlePanel, BorderLayout.NORTH);
 
         // Table of items
         JTable itemsTable = new JTable();

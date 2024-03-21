@@ -65,6 +65,7 @@ public class UserInterface {
 
         centerPanel = new JPanel();
         centerPanel.setLayout(cardLayout);
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         loginPanel = new LoginPanel(this, system, frame);
         registerPanel = new RegisterPanel(this, system, frame);
@@ -72,7 +73,7 @@ public class UserInterface {
         centreManagerCard = new CentreManagerCard(this, system);
         centerPanel.add(loginPanel.getPanel(), "login");
         centerPanel.add(registerPanel.getPanel(), "register");
-        centerPanel.add(technicianPanel.getPanel(), "technician");
+        centerPanel.add(technicianPanel, "technician");
         centerPanel.add(centreManagerCard, "centreManager");
 
         frame.setContentPane(centerPanel);

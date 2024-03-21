@@ -20,17 +20,10 @@ public class AddUser extends JFrame {
         this.system = system;
         this.userManagement = userManagement;
         setTitle("AddUser");
-        setSize(300, 200);
+        setSize(300, 180);
 
-        // for the border margins
-        setLayout(new BorderLayout(10, 10));
-        add(new JPanel(), BorderLayout.NORTH);
-        add(new JPanel(), BorderLayout.EAST);
-        add(new JPanel(), BorderLayout.WEST);
-        add(new JPanel(), BorderLayout.SOUTH);
-
-        // the actual panel we're using
         panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(panel, BorderLayout.CENTER);
 
         TitlePanel titlePanel = new TitlePanel("Add User");
