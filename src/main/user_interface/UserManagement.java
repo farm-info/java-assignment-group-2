@@ -10,7 +10,6 @@ import java.util.Map;
 
 import main.system.*;
 
-// TODO back button
 public class UserManagement extends TablePanel {
     private Map<String, User> users;
     private UserTableModel userTableModel;
