@@ -23,6 +23,14 @@ public class UserManagement extends TablePanel {
             centreManagerCard.showPanel("centreManager");
         });
         titleButtonPanel.add(createBackButton, 0);
+
+        // Add user button
+        JButton addUserButton = new JButton("Add user");
+        addUserButton.addActionListener(e -> {
+            AddUser window = new AddUser(this, system);
+            window.setVisible(true);
+        });
+        titleButtonPanel.add(addUserButton);
     }
 
     @Override
