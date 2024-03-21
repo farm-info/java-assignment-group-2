@@ -230,7 +230,7 @@ class AppointmentsTableModel extends AbstractTableModel {
             case 4:
                 return "Creation Date";
             case 5:
-                return "Payment Status";
+                return "Paid?";
             case 6:
                 return "Payment Amount";
             case 7:
