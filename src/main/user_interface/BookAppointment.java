@@ -33,6 +33,7 @@ public class BookAppointment extends JFrame implements ActionListener {
     // public BookAppointment(AHHASCSystem system, Customer customer) {
     // }
 
+    // TODO fix inconsistency because... jas
     public BookAppointment(CentreManagerAppointmentPanel centreManagerAppointmentPanel, AHHASCSystem system) {
         this.system = system;
         this.centreManagerAppointmentPanel = centreManagerAppointmentPanel;
