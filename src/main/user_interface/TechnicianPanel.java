@@ -29,10 +29,6 @@ class TechnicianPanel extends AppointmentsPanel {
         AppointmentWindow window = new TechnicianAppointmentWindow(this, appointment, system);
         window.setVisible(true);
     }
-
-    public JPanel getPanel() {
-        return panel;
-    }
 }
 
 class TechnicianAppointmentWindow extends AppointmentWindow {
