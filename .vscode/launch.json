@@ -21,7 +21,7 @@
             "type": "java",
             "name": "UserInterface",
             "request": "launch",
-            "mainClass": "main.main",
+            "mainClass": "main.Main",
             "projectName": "java-assignment-group-2_83d72099"
         }
     ]

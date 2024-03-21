@@ -4,7 +4,7 @@ import javax.swing.SwingUtilities;
 
 import main.user_interface.UserInterface;
 
-public class main {
+public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new UserInterface();

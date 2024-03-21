@@ -2,7 +2,6 @@ package main.user_interface;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import java.awt.*;
 
 import java.util.ArrayList;
 import java.util.List;

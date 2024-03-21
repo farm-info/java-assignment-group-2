@@ -6,14 +6,11 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 import java.awt.*;
-import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
-import main.system.AHHASCSystem;
-import main.system.Appointment;
-import main.system.BaseItem;
+import main.system.*;
 
 abstract class AppointmentsPanel extends TablePanel {
     protected Map<String, Appointment> assignedAppointments;

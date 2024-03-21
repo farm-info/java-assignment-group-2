@@ -5,8 +5,6 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import java.io.IOException;
-
 import java.math.BigDecimal;
 import java.text.*;
 import java.time.*;
@@ -15,7 +13,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.List;
 
-import main.data_access.ItemNotFoundException;
 import main.system.*;
 
 public class BookAppointment extends JFrame implements ActionListener {

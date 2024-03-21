@@ -6,16 +6,12 @@ import java.awt.CardLayout;
 import main.system.AHHASCSystem;
 
 public class CentreManagerCard extends JPanel {
-    private AHHASCSystem system;
-    private UserInterface userInterface;
     private CardLayout cardLayout;
     private CentreManagerAppointmentPanel appointmentPanel;
     private CustomerManagement customerManagement;
     private UserManagement userManagement;
 
     public CentreManagerCard(UserInterface userInterface, AHHASCSystem system) {
-        this.system = system;
-        this.userInterface = userInterface;
         this.cardLayout = new CardLayout();
         setLayout(cardLayout);
 

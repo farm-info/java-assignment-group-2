@@ -1,15 +1,9 @@
 package main.user_interface;
 
-import java.util.*;
-import java.util.List;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 
 import main.system.*;
 
