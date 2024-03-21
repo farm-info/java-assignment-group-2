@@ -222,25 +222,6 @@ public class AHHASCSystem {
         return technicianAppointments;
     }
 
-    // TODO remove?
-    public Boolean setAppointment(String appointmentId, Customer customer, Technician technician,
-            LocalDate appointmentDate,
-            BigDecimal paymentAmount) {
-        if (!hasCurrentUserPermission(User.Role.TECHNICIAN)) {
-            System.out.println("Permission denied: Set appointment");
-            return false;
-        }
-
-        Appointment appointment = appointments.get(appointmentId);
-        appointment.setCustomer(customer);
-        appointment.setTechnician(technician);
-        appointment.setAppointmentDate(appointmentDate);
-        appointment.setPaymentAmount(paymentAmount);
-        System.out.println("Appointment updated successfully.");
-        return true;
-    }
-
-    // TODO test
     public Boolean setAppointmentPayment(Appointment appointment, BigDecimal paymentAmount, Boolean paymentStatus) {
         if (!hasCurrentUserPermission(User.Role.TECHNICIAN)) {
             System.out.println("Permission denied: Collect payment");
