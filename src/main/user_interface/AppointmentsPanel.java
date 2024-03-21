@@ -187,7 +187,7 @@ class AppointmentsTableModel extends AbstractTableModel {
             case 7:
                 return "Feedback";
             case 8:
-                return buttonText + "Appointment";
+                return buttonText + " Appointment";
             default:
                 return null;
         }
