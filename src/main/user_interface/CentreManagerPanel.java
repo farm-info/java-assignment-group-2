@@ -74,10 +74,10 @@ class CentreManagerPanel extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         jLabel1.setText("AHHASC Manager Page");
 
-        jButton1.setText("Edit Profile");
+        jButton1.setText("Change Password");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editProfileActionPerformed(evt);
+                changePasswordActionPerformed(evt);
             }
         });
 
@@ -184,9 +184,8 @@ class CentreManagerPanel extends javax.swing.JPanel {
                                 .addContainerGap(74, Short.MAX_VALUE)));
     }// </editor-fold>
 
-    private void editProfileActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-        // TODO add this button (and logout) for technicians
+    private void changePasswordActionPerformed(java.awt.event.ActionEvent evt) {
+        new ChangePasswordWindow(system);
     }
 
     private void manageUsersActionPerformed(java.awt.event.ActionEvent evt) {

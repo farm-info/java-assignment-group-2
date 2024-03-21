@@ -25,10 +25,9 @@ class TechnicianPanel extends AppointmentsPanel {
         });
         titleButtonPanel.add(logoutButton, 0);
 
-        // TODO Change password
         JButton changePasswordButton = new JButton("Change password");
         changePasswordButton.addActionListener(e -> {
-            userInterface.showPanel("changePassword");
+            new ChangePasswordWindow(system);
         });
         titleButtonPanel.add(changePasswordButton, 1);
     }

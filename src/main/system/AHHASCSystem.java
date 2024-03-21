@@ -60,6 +60,22 @@ public class AHHASCSystem {
         return currentUser;
     }
 
+    public Boolean changePassword(String oldPassword, String newPassword) {
+        if (currentUser == null) {
+            System.out.println("No user logged in.");
+            return false;
+        }
+
+        if (!currentUser.getPassword().equals(oldPassword)) {
+            System.out.println("Old password is incorrect.");
+            return false;
+        }
+
+        currentUser.setPassword(newPassword);
+        System.out.println("Password changed successfully.");
+        return true;
+    }
+
     public void logout() {
         currentUser = null;
         System.out.println("Logged out.");
