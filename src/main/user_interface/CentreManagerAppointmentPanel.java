@@ -66,13 +66,14 @@ class CentreManagerAppointmentWindow extends AppointmentWindow {
 
         JButton deleteButton = new JButton("Delete appointment");
         deleteButton.addActionListener(e -> {
-            createDeleteComfirmationWindow();
+            JFrame window = createDeleteComfirmationWindow();
+            window.setVisible(true);
         });
         bottomPanel.add(deleteButton);
         nestedPanel.add(bottomSavePanel, BorderLayout.SOUTH);
     }
 
-    private void createDeleteComfirmationWindow() {
+    private JFrame createDeleteComfirmationWindow() {
         JFrame confirmationFrame = new JFrame("Delete appointment?");
         confirmationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         confirmationFrame.setSize(300, 100);
@@ -87,7 +88,7 @@ class CentreManagerAppointmentWindow extends AppointmentWindow {
             system.removeAppointment(appointment.getId());
             system.saveData();
             centreManagerAppointmentPanel.refreshItemsTable();
-            frame.dispose();
+            dispose();
             confirmationFrame.dispose();
         });
         confirmationPanel.add(confirmButton);
@@ -96,6 +97,6 @@ class CentreManagerAppointmentWindow extends AppointmentWindow {
         cancelButton.addActionListener(e -> confirmationFrame.dispose());
         confirmationPanel.add(cancelButton);
 
-        confirmationFrame.setVisible(true);
+        return confirmationFrame;
     }
 }

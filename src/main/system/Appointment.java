@@ -4,7 +4,11 @@ import java.time.LocalDate;
 import java.math.BigDecimal;
 
 public class Appointment extends BaseItem {
-    // TODO migrate to storing IDs and utilizing hashmaps
+    /*
+     * WONTFIX We might want to consider storing IDs and utilizing hashmaps
+     * instead of storing the whole object
+     * But honestly, i'm not sure which one is the better solution
+     */
     private Customer customer;
     private Technician technician;
     private LocalDate creationDate;

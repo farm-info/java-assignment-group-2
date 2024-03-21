@@ -9,7 +9,8 @@ import main.system.*;
 import java.time.LocalDate;
 
 public class DataAccess {
-    // FIXME it appends insteads of overwriting
+    // FIXME there's a bug where it appends insteads of overwriting?
+    // not sure if it exists anymore
     static public <T extends BaseItem> void saveObjectsToCSV(Map<String, T> objects, String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             if (!objects.isEmpty()) {

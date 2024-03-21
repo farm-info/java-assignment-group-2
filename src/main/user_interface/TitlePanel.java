@@ -3,7 +3,6 @@ package main.user_interface;
 import javax.swing.*;
 import java.awt.*;
 
-// TODO make the technician reuse this too
 public class TitlePanel extends JPanel {
     public TitlePanel(String title) {
         setLayout(new BorderLayout());

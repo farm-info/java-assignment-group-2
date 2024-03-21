@@ -42,15 +42,13 @@ abstract class AppointmentsPanel extends TablePanel {
  * - collectPayment() from customers
  * - enterFeedback() for customers to enter feedback after each appointment
  */
-abstract class AppointmentWindow {
-    // TODO decimal format add to all
+abstract class AppointmentWindow extends JFrame {
     protected DecimalFormat decimalFormat = new DecimalFormat("#0.00");
 
     protected AppointmentsPanel appointmentsPanel;
     protected AHHASCSystem system;
     protected Appointment appointment;
 
-    protected JFrame frame;
     protected JPanel panel, nestedPanel, bottomPanel, bottomSavePanel;
     protected Boolean paymentStatus;
     protected BigDecimal paymentAmount;
@@ -67,14 +65,14 @@ abstract class AppointmentWindow {
         createTitlePanel();
         createDetailsPanel();
         createBottomPanels();
-
-        frame.setContentPane(panel);
     }
 
     private void createFrameAndPanel() {
-        frame = new JFrame("Appointment Details");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(600, 400);
+        setTitle("Appointment Details");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(600, 400);
+        setContentPane(panel);
+
         nestedPanel = new JPanel(new BorderLayout());
         panel = new JPanel(new BorderLayout());
         panel.add(nestedPanel, BorderLayout.CENTER);
@@ -135,7 +133,7 @@ abstract class AppointmentWindow {
         // Back button
         JButton backButton = new JButton("Close");
         backButton.addActionListener(e -> {
-            frame.dispose();
+            dispose();
         });
         bottomSavePanel.add(backButton);
 
@@ -157,7 +155,7 @@ abstract class AppointmentWindow {
             system.setAppointmentPayment(appointment, newPaymentAmount, paymentStatus);
 
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(frame, "Invalid payment amount.");
+            JOptionPane.showMessageDialog(this, "Invalid payment amount.");
             return;
         }
 
@@ -169,12 +167,8 @@ abstract class AppointmentWindow {
         system.setAppointmentDate(appointment, appointmentDate);
 
         appointmentsPanel.refreshItemsTable();
-        JOptionPane.showMessageDialog(frame, "Appointment updated successfully.");
-        frame.dispose();
-    }
-
-    public void setVisible(boolean visible) {
-        frame.setVisible(visible);
+        JOptionPane.showMessageDialog(this, "Appointment updated successfully.");
+        dispose();
     }
 }
 

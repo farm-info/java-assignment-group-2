@@ -128,12 +128,13 @@ class EditCustomerWindow extends CustomerWindow {
     private void addDeleteButton() {
         JButton deleteButton = new JButton("Delete customer");
         deleteButton.addActionListener(e -> {
-            createDeleteComfirmationWindow();
+            JFrame window = createDeleteComfirmationWindow();
+            window.setVisible(true);
         });
         bottomPanel.add(deleteButton);
     }
 
-    private void createDeleteComfirmationWindow() {
+    private JFrame createDeleteComfirmationWindow() {
         JFrame confirmationFrame = new JFrame("Delete customer?");
         confirmationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         confirmationFrame.setSize(300, 100);
@@ -156,7 +157,7 @@ class EditCustomerWindow extends CustomerWindow {
         cancelButton.addActionListener(e -> confirmationFrame.dispose());
         confirmationPanel.add(cancelButton);
 
-        confirmationFrame.setVisible(true);
+        return confirmationFrame;
     }
 }
 

@@ -137,7 +137,7 @@ public class AHHASCSystem {
     }
 
     public void saveData() {
-        // TODO change this
+        // WONTFIX is there a better solution?
         DataAccess.saveObjectsToCSV(users, userFilePath);
         DataAccess.saveObjectsToCSV(customers, customerFilePath);
         DataAccess.saveObjectsToCSV(appointments, appointmentFilePath);

@@ -32,7 +32,7 @@ public class BookAppointment extends JFrame implements ActionListener {
         customerComboBox.setSelectedItem(customer.getId());
     }
 
-    // WONTFIX inconsistency from both of our code
+    // FIXME inconsistency from both of our code
     public BookAppointment(CentreManagerAppointmentPanel centreManagerAppointmentPanel, AHHASCSystem system) {
         this.centreManagerAppointmentPanel = centreManagerAppointmentPanel;
         init(system);

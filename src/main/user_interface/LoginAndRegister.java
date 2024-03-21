@@ -36,7 +36,6 @@ class LoginPanel extends JPanel {
             if (userRole != null) {
                 JOptionPane.showMessageDialog(frame, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-                // TODO implement the panels
                 if (userRole == User.Role.CENTRE_MANAGER) {
                     userInterface.showPanel("centreManager");
                 } else if (userRole == User.Role.TECHNICIAN) {
