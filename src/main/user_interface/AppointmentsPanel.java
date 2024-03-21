@@ -133,6 +133,7 @@ abstract class AppointmentWindow {
 
 class AppointmentsTableModel extends AbstractTableModel {
     protected List<Appointment> appointments = new ArrayList<>();
+    String buttonText = "View";
 
     @Override
     public int getRowCount() {
@@ -164,7 +165,7 @@ class AppointmentsTableModel extends AbstractTableModel {
             case 7:
                 return appointment.getFeedback();
             case 8:
-                return "View";
+                return buttonText;
             default:
                 return null;
         }
@@ -189,7 +190,7 @@ class AppointmentsTableModel extends AbstractTableModel {
             case 7:
                 return "Feedback";
             case 8:
-                return "View Appointment";
+                return buttonText + "Appointment";
             default:
                 return null;
         }

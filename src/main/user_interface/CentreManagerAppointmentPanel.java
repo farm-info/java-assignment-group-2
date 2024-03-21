@@ -12,6 +12,9 @@ class CentreManagerAppointmentPanel extends AppointmentsPanel {
     public CentreManagerAppointmentPanel(CentreManagerCard centreManagerCard, AHHASCSystem system) {
         super(system, "All appointments");
 
+        // Change table button text
+        appointmentsTableModel.buttonText = "Edit";
+
         // Back button
         JButton createBackButton = new JButton("Back");
         createBackButton.addActionListener(e -> {

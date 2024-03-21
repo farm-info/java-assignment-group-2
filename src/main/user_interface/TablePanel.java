@@ -55,7 +55,7 @@ abstract class TablePanel extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(itemsTable);
         itemsTable.setFillsViewportHeight(true);
-        panel.add(scrollPane, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.CENTER);
     }
 
     abstract public void setModel(JTable itemTable);
