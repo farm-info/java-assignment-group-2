@@ -59,23 +59,21 @@ class CentreManagerAppointmentWindow extends AppointmentWindow {
     public CentreManagerAppointmentWindow(CentreManagerAppointmentPanel centreManagerAppointmentPanel,
             Appointment appointment,
             AHHASCSystem system) {
-        super(appointment, system);
+
+        super(centreManagerAppointmentPanel, appointment, system);
         this.centreManagerAppointmentPanel = centreManagerAppointmentPanel;
-    }
 
-    @Override
-    protected void createBottomPanels() {
-        createDeletePanel();
-    }
+        appointmentDateField.setEditable(true);
+        paymentAmountField.setEditable(true);
+        paymentStatusBox.setEnabled(true);
+        feedbackTextField.setEditable(true);
 
-    private void createDeletePanel() {
-        JPanel deletePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton deleteButton = new JButton("Delete appointment");
         deleteButton.addActionListener(e -> {
             createDeleteComfirmationWindow();
         });
-        deletePanel.add(deleteButton);
-        nestedPanel.add(deletePanel, BorderLayout.SOUTH);
+        bottomPanel.add(deleteButton);
+        nestedPanel.add(bottomSavePanel, BorderLayout.SOUTH);
     }
 
     private void createDeleteComfirmationWindow() {

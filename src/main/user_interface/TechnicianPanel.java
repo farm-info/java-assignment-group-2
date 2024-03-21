@@ -26,7 +26,7 @@ class TechnicianPanel extends AppointmentsPanel {
 
     @Override
     protected void createItemWindow(Appointment appointment) {
-        AppointmentWindow window = new TechnicianAppointmentWindow(appointment, system);
+        AppointmentWindow window = new TechnicianAppointmentWindow(this, appointment, system);
         window.setVisible(true);
     }
 
@@ -36,58 +36,11 @@ class TechnicianPanel extends AppointmentsPanel {
 }
 
 class TechnicianAppointmentWindow extends AppointmentWindow {
-    public TechnicianAppointmentWindow(Appointment appointment, AHHASCSystem system) {
-        super(appointment, system);
-    }
+    public TechnicianAppointmentWindow(TechnicianPanel technicianPanel, Appointment appointment,
+            AHHASCSystem system) {
+        super(technicianPanel, appointment, system);
 
-    @Override
-    protected void createBottomPanels() {
-        createPaymentPanel();
-        createFeedbackPanel();
-    }
-
-    private void createPaymentPanel() {
-        JPanel collectPaymentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        // TODO wait... is this supposed to be modified by the technician?
-        JFormattedTextField paymentAmountField = new JFormattedTextField(paymentAmount);
-        DefaultFormatter fmt = new NumberFormatter(decimalFormat);
-        fmt.setValueClass(paymentAmountField.getValue().getClass());
-        DefaultFormatterFactory fmtFactory = new DefaultFormatterFactory(fmt, fmt, fmt);
-        paymentAmountField.setFormatterFactory(fmtFactory);
-
-        JCheckBox paymentStatusCheckbox = new JCheckBox("Paid", paymentStatus);
-        JButton collectPaymentButton = new JButton("Modify payment status");
-        collectPaymentButton.addActionListener(e -> {
-            try {
-                BigDecimal newPaymentAmount = new BigDecimal(paymentAmountField.getText());
-                system.setAppointmentPayment(appointment.getId(), newPaymentAmount, paymentStatusCheckbox.isSelected());
-                // Update data // Payment panel
-
-                paymentStatusLabel.setText(paymentStatusCheckbox.isSelected() ? "Paid" : "Unpaid");
-                paymentAmountLabel.setText(decimalFormat.format(newPaymentAmount));
-                JOptionPane.showMessageDialog(frame, "Payment updated successfully.");
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(frame, "Invalid payment amount.");
-            }
-        });
-        collectPaymentPanel.add(new JLabel("Payment amount:"));
-        collectPaymentPanel.add(paymentAmountField);
-        collectPaymentPanel.add(paymentStatusCheckbox);
-        collectPaymentPanel.add(collectPaymentButton);
-        nestedPanel.add(collectPaymentPanel, BorderLayout.SOUTH);
-    }
-
-    private void createFeedbackPanel() {
-        JPanel feedbackPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JTextField feedbackField = new JTextField(appointment.getFeedback());
-        JButton enterFeedbackButton = new JButton("Enter feedback");
-        enterFeedbackButton.addActionListener(e -> {
-            system.setAppointmentFeedback(appointment.getId(), feedbackField.getText());
-            JOptionPane.showMessageDialog(frame, "Feedback updated successfully.");
-        });
-        feedbackPanel.add(new JLabel("Feedback:"));
-        feedbackPanel.add(feedbackField);
-        feedbackPanel.add(enterFeedbackButton);
-        panel.add(feedbackPanel, BorderLayout.SOUTH);
+        paymentStatusBox.setEnabled(true);
+        feedbackTextField.setEditable(true);
     }
 }

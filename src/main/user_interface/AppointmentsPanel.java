@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import java.awt.*;
 
 import javax.swing.*;
+import javax.swing.text.*;
 import javax.swing.table.AbstractTableModel;
 
 import main.system.*;
@@ -48,16 +49,21 @@ abstract class AppointmentsPanel extends TablePanel {
 abstract class AppointmentWindow {
     // TODO decimal format add to all
     protected DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+
+    protected AppointmentsPanel appointmentsPanel;
     protected AHHASCSystem system;
     protected Appointment appointment;
 
     protected JFrame frame;
-    protected JPanel panel, nestedPanel;
+    protected JPanel panel, nestedPanel, bottomPanel, bottomSavePanel;
     protected Boolean paymentStatus;
     protected BigDecimal paymentAmount;
-    protected JLabel paymentStatusLabel, paymentAmountLabel;
+    protected ReadOnlyTextField appointmentDateField, feedbackTextField;
+    protected ReadOnlyFormattedTextField paymentAmountField;
+    protected JCheckBox paymentStatusBox;
 
-    public AppointmentWindow(Appointment appointment, AHHASCSystem system) {
+    public AppointmentWindow(AppointmentsPanel appointmentsPanel, Appointment appointment, AHHASCSystem system) {
+        this.appointmentsPanel = appointmentsPanel;
         this.appointment = appointment;
         this.system = system;
 
@@ -68,8 +74,6 @@ abstract class AppointmentWindow {
 
         frame.setContentPane(panel);
     }
-
-    abstract protected void createBottomPanels();
 
     private void createFrameAndPanel() {
         frame = new JFrame("Appointment Details");
@@ -82,14 +86,6 @@ abstract class AppointmentWindow {
 
     private void createTitlePanel() {
         JPanel titlePanel = new TitlePanel("Appointment Details");
-
-        // Back button
-        JButton backButton = new JButton("Close");
-        backButton.addActionListener(e -> {
-            frame.dispose();
-        });
-        titlePanel.add(backButton, BorderLayout.EAST);
-
         nestedPanel.add(titlePanel, BorderLayout.NORTH);
     }
 
@@ -103,24 +99,77 @@ abstract class AppointmentWindow {
         detailsPanel.add(new JLabel(appointment.getCustomer().getContactEmail()));
         detailsPanel.add(new JLabel("Customer Phone:"));
         detailsPanel.add(new JLabel(appointment.getCustomer().getContactNumber()));
-        detailsPanel.add(new JLabel("Appointment Date:"));
-        detailsPanel.add(new JLabel(appointment.getAppointmentDate().toString()));
+
         detailsPanel.add(new JLabel("Creation Date:"));
         detailsPanel.add(new JLabel(appointment.getCreationDate().toString()));
+
+        detailsPanel.add(new JLabel("Appointment Date:"));
+        appointmentDateField = new ReadOnlyTextField(appointment.getAppointmentDate().toString());
+        detailsPanel.add(appointmentDateField);
+
         detailsPanel.add(new JLabel("Payment Status:"));
 
-        this.paymentStatus = appointment.getPaymentStatus();
-        this.paymentStatusLabel = new JLabel(paymentStatus ? "Paid" : "Unpaid");
-        detailsPanel.add(paymentStatusLabel);
+        paymentStatus = appointment.getPaymentStatus();
+        paymentStatusBox = new JCheckBox("Paid", paymentStatus);
+        paymentStatusBox.setEnabled(false);
+        detailsPanel.add(paymentStatusBox);
 
         detailsPanel.add(new JLabel("Payment Amount:"));
-        this.paymentAmount = appointment.getPaymentAmount();
-        this.paymentAmountLabel = new JLabel(decimalFormat.format(paymentAmount));
 
-        detailsPanel.add(paymentAmountLabel);
+        paymentAmount = appointment.getPaymentAmount();
+        paymentAmountField = new ReadOnlyFormattedTextField(paymentAmount);
+        DefaultFormatter fmt = new NumberFormatter(decimalFormat);
+        fmt.setValueClass(paymentAmountField.getValue().getClass());
+        DefaultFormatterFactory fmtFactory = new DefaultFormatterFactory(fmt, fmt, fmt);
+        paymentAmountField.setFormatterFactory(fmtFactory);
+
+        detailsPanel.add(paymentAmountField);
+
         detailsPanel.add(new JLabel("Feedback:"));
-        detailsPanel.add(new JLabel(appointment.getFeedback()));
+        feedbackTextField = new ReadOnlyTextField(appointment.getFeedback());
+        detailsPanel.add(feedbackTextField);
+
         nestedPanel.add(detailsPanel, BorderLayout.CENTER);
+    }
+
+    private void createBottomPanels() {
+        bottomPanel = new JPanel(new BorderLayout());
+        bottomSavePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+        // Back button
+        JButton backButton = new JButton("Close");
+        backButton.addActionListener(e -> {
+            frame.dispose();
+        });
+        bottomSavePanel.add(backButton);
+
+        // Save button
+        JButton saveButton = new JButton("Save");
+        saveButton.addActionListener(e -> {
+            saveAppointment();
+        });
+        bottomSavePanel.add(saveButton);
+
+        bottomPanel.add(bottomSavePanel, BorderLayout.EAST);
+        nestedPanel.add(bottomPanel, BorderLayout.SOUTH);
+    }
+
+    private void saveAppointment() {
+        String feedback = feedbackTextField.getText();
+        system.setAppointmentFeedback(appointment, feedback);
+
+        try {
+            BigDecimal newPaymentAmount = new BigDecimal(paymentAmountField.getText());
+            system.setAppointmentPayment(appointment, newPaymentAmount, paymentStatusBox.isSelected());
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(frame, "Invalid payment amount.");
+            return;
+        }
+
+        appointmentsPanel.updateItemsTable();
+        JOptionPane.showMessageDialog(frame, "Appointment updated successfully.");
+        frame.dispose();
     }
 
     public void setVisible(boolean visible) {
