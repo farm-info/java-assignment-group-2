@@ -61,7 +61,7 @@ public class UserInterface {
                 System.exit(0);
             }
         });
-        frame.setSize(400, 300);
+        frame.setSize(1100, 500);
 
         centerPanel = new JPanel();
         centerPanel.setLayout(cardLayout);
@@ -90,7 +90,7 @@ public class UserInterface {
             centreManagerCard.updateAppointmentsTable();
         }
         cardLayout.show(centerPanel, panelName);
-        frame.pack();
+        // frame.pack();
         frame.setVisible(true);
     }
 }
