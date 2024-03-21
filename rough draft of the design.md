@@ -1,3 +1,25 @@
+## pages
+- [x] login and register - wenyi
+- [ ] edit passwords
+- [x] centreManagerPanel - jas, wenyi
+  - [x] user management - wenyi
+    - [x] remove user
+    - [x] addUser()
+  - [x] customer management - jas, wenyi
+    - [x] addCustomer()
+    - [x] CustomerWindow
+      - [x] removeCustomer()
+      - [x] editCustomer()
+      - [-] BookAppointment - jas, wenyi
+  - [x] appointment management - wenyi
+      - [x] BookAppointment - jas, wenyi
+    - [ ] update appointment info
+    - [x] cancel appointment
+- [x] technicianPanel - wenyi
+  - [x] AppointmentWindow
+    - [x] collect payment
+    - [x] enter feedback
+
 ## design
 ### features
 each feature has its own individual page
