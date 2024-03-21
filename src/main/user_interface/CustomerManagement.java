@@ -2,6 +2,7 @@ package main.user_interface;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import java.awt.event.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,19 @@ public class CustomerManagement extends TablePanel {
             window.setVisible(true);
         });
         titleButtonPanel.add(addCustomerButton);
+
+        // Book appointment button for each customer
+        Action bookAppointmentForCustomer = new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                int modelRow = Integer.valueOf(e.getActionCommand());
+                Customer customer = CustomerTableModel.customers.get(modelRow);
+                // TODO windows should not set themselves visible
+                BookAppointment window = new BookAppointment(system, customer);
+                window.setVisible(true);
+            }
+        };
+        ButtonColumn buttonColumn = new ButtonColumn(itemsTable, bookAppointmentForCustomer, 5);
+        buttonColumn.setMnemonic(KeyEvent.VK_D);
     }
 
     @Override
@@ -61,7 +75,7 @@ class CustomerTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 5;
+        return 6;
     }
 
     public Object getValueAt(int row, int column) {
@@ -77,6 +91,8 @@ class CustomerTableModel extends AbstractTableModel {
                 return customer.getContactEmail();
             case 4:
                 return "Edit";
+            case 5:
+                return "Book";
             default:
                 return null;
         }
@@ -94,6 +110,8 @@ class CustomerTableModel extends AbstractTableModel {
                 return "Contact email";
             case 4:
                 return "Edit customer";
+            case 5:
+                return "Book appointment";
             default:
                 return null;
         }
@@ -102,6 +120,8 @@ class CustomerTableModel extends AbstractTableModel {
     public boolean isCellEditable(int row, int column) {
         switch (column) {
             case 4:
+                return true;
+            case 5:
                 return true;
             default:
                 return false;

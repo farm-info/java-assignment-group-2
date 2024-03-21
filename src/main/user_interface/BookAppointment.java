@@ -26,14 +26,20 @@ public class BookAppointment extends JFrame implements ActionListener {
     private Map<String, Customer> customers;
     private List<Technician> technicians;
 
-    // TODO constructor where the combo box is pre-filled with the customer's name
-    // public BookAppointment(AHHASCSystem system, Customer customer) {
-    // }
+    // constructor where the combo box is pre-filled with the customer's name
+    public BookAppointment(AHHASCSystem system, Customer customer) {
+        init(system);
+        customerComboBox.setSelectedItem(customer.getId());
+    }
 
-    // TODO fix inconsistency because... jas
+    // WONTFIX inconsistency from both of our code
     public BookAppointment(CentreManagerAppointmentPanel centreManagerAppointmentPanel, AHHASCSystem system) {
-        this.system = system;
         this.centreManagerAppointmentPanel = centreManagerAppointmentPanel;
+        init(system);
+    }
+
+    private void init(AHHASCSystem system) {
+        this.system = system;
 
         setTitle("Book Appointment");
         setSize(800, 700);
@@ -100,8 +106,6 @@ public class BookAppointment extends JFrame implements ActionListener {
         bookButton.setBounds(300, 390, 200, 25);
         bookButton.addActionListener(this);
         add(bookButton);
-
-        setVisible(true);
     }
 
     @Override
@@ -133,7 +137,9 @@ public class BookAppointment extends JFrame implements ActionListener {
         // Interact with backend
         system.addAppointment(customer, technicianId, date, new BigDecimal(paymentAmount));
         system.saveData();
-        centreManagerAppointmentPanel.refreshItemsTable();
+        if (centreManagerAppointmentPanel != null) {
+            centreManagerAppointmentPanel.refreshItemsTable();
+        }
 
         // Success message
         String message = "Your appointment has been booked successfully!";
