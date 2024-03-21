@@ -147,6 +147,7 @@ class EditCustomerWindow extends CustomerWindow {
         confirmButton.addActionListener(e -> {
             system.removeCustomer(customer.getId());
             customerManagement.updateItemsTable();
+            confirmationFrame.dispose();
             dispose();
         });
         confirmationPanel.add(confirmButton);
