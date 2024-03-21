@@ -34,10 +34,6 @@ abstract class AppointmentsPanel extends TablePanel {
     }
 
     abstract protected void createItemWindow(Appointment appointment);
-
-    public JPanel getPanel() {
-        return panel;
-    }
 }
 
 /*

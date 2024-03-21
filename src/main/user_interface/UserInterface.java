@@ -71,8 +71,8 @@ public class UserInterface {
         registerPanel = new RegisterPanel(this, system, frame);
         technicianPanel = new TechnicianPanel(this, system);
         centreManagerCard = new CentreManagerCard(this, system);
-        centerPanel.add(loginPanel.getPanel(), "login");
-        centerPanel.add(registerPanel.getPanel(), "register");
+        centerPanel.add(loginPanel, "login");
+        centerPanel.add(registerPanel, "register");
         centerPanel.add(technicianPanel, "technician");
         centerPanel.add(centreManagerCard, "centreManager");
 

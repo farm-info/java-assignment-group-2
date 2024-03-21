@@ -41,10 +41,6 @@ class CentreManagerAppointmentPanel extends AppointmentsPanel {
         AppointmentWindow window = new CentreManagerAppointmentWindow(this, appointment, system);
         window.setVisible(true);
     }
-
-    public JPanel getPanel() {
-        return panel;
-    }
 }
 
 /*

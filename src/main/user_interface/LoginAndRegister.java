@@ -6,27 +6,25 @@ import main.system.AHHASCSystem;
 import main.system.User;
 import main.system.UserNameAlreadyExistsException;
 
-class LoginPanel {
-    private JPanel panel;
+class LoginPanel extends JPanel {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton, registerRedirectButton;
 
     public LoginPanel(UserInterface userInterface, AHHASCSystem system, JFrame frame) {
-        panel = new JPanel();
-        panel.setLayout(new FlowLayout());
+        setLayout(new FlowLayout());
 
         // Username label and field
         JLabel usernameLabel = new JLabel("Username:");
         usernameField = new JTextField(20);
-        panel.add(usernameLabel);
-        panel.add(usernameField);
+        add(usernameLabel);
+        add(usernameField);
 
         // Password label and field
         JLabel passwordLabel = new JLabel("Password:");
         passwordField = new JPasswordField(20);
-        panel.add(passwordLabel);
-        panel.add(passwordField);
+        add(passwordLabel);
+        add(passwordField);
 
         // Login button
         loginButton = new JButton("Login");
@@ -54,38 +52,32 @@ class LoginPanel {
                         JOptionPane.ERROR_MESSAGE);
             }
         });
-        panel.add(loginButton);
+        add(loginButton);
 
         // Register redirect button
         registerRedirectButton = new JButton("Go to Register page");
         registerRedirectButton.addActionListener(e -> {
             userInterface.showPanel("register");
         });
-        panel.add(registerRedirectButton);
-    }
-
-    public JPanel getPanel() {
-        return panel;
+        add(registerRedirectButton);
     }
 }
 
-class RegisterPanel {
-    private JPanel panel;
+class RegisterPanel extends JPanel {
 
     public RegisterPanel(UserInterface userInterface, AHHASCSystem system, JFrame frame) {
-        panel = new JPanel();
-        panel.setLayout(new FlowLayout());
+        setLayout(new FlowLayout());
 
         // Registration fields
         JLabel registerUsernameLabel = new JLabel("Username:");
         JTextField usernameField = new JTextField(20);
-        panel.add(registerUsernameLabel);
-        panel.add(usernameField);
+        add(registerUsernameLabel);
+        add(usernameField);
 
         JLabel registerPasswordLabel = new JLabel("Password:");
         JPasswordField passwordField = new JPasswordField(20);
-        panel.add(registerPasswordLabel);
-        panel.add(passwordField);
+        add(registerPasswordLabel);
+        add(passwordField);
 
         // Register button
         JButton registerButton = new JButton("Register");
@@ -125,18 +117,14 @@ class RegisterPanel {
                 passwordField.setText("");
             }
         });
-        panel.add(registerButton);
+        add(registerButton);
 
         // Redirect to login page
         JButton loginRedirectButton = new JButton("Go to Login page");
         loginRedirectButton.addActionListener(e -> {
             userInterface.showPanel("login");
         });
-        panel.add(loginRedirectButton);
-    }
-
-    public JPanel getPanel() {
-        return panel;
+        add(loginRedirectButton);
     }
 }
 
