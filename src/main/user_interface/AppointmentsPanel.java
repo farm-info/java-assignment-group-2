@@ -84,7 +84,7 @@ abstract class AppointmentWindow {
     }
 
     private void createTitlePanel() {
-        JPanel titlePanel = new TitlePanel("Appointment Details").getTitlePanel();
+        JPanel titlePanel = new TitlePanel("Appointment Details");
 
         // Back button
         JButton backButton = new JButton("Close");

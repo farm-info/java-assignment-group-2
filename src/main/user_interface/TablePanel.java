@@ -27,7 +27,7 @@ abstract class TablePanel {
         panel.setLayout(new BorderLayout());
 
         // Title
-        JPanel titlePanel = new TitlePanel(title).getTitlePanel();
+        JPanel titlePanel = new TitlePanel(title);
 
         // Title button panel
         titleButtonPanel = new JPanel(new FlowLayout());
