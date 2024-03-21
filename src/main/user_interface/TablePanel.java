@@ -8,9 +8,10 @@ import javax.swing.*;
 import main.system.*;
 
 abstract class TablePanel extends JPanel {
-    protected JPanel panel;
     protected AHHASCSystem system;
-    protected JPanel titleButtonPanel;
+
+    protected JPanel panel, titleButtonPanel;
+    protected JTable itemsTable;
     protected int buttonColumnIndex;
 
     public TablePanel(AHHASCSystem system, String title, int buttonColumnIndex) {
@@ -34,7 +35,7 @@ abstract class TablePanel extends JPanel {
         add(titlePanel, BorderLayout.NORTH);
 
         // Table of items
-        JTable itemsTable = new JTable();
+        itemsTable = new JTable();
         setModel(itemsTable);
         itemsTable.setRowHeight(25);
 
