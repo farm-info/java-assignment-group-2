@@ -65,18 +65,20 @@ class LoginPanel extends JPanel {
 class RegisterPanel extends JPanel {
 
     public RegisterPanel(UserInterface userInterface, AHHASCSystem system, JFrame frame) {
-        setLayout(new FlowLayout());
+        setLayout(new FlowLayout(FlowLayout.CENTER));
+        Panel panel = new Panel(new FlowLayout());
+        add(panel);
 
         // Registration fields
         JLabel registerUsernameLabel = new JLabel("Username:");
         JTextField usernameField = new JTextField(20);
-        add(registerUsernameLabel);
-        add(usernameField);
+        panel.add(registerUsernameLabel);
+        panel.add(usernameField);
 
         JLabel registerPasswordLabel = new JLabel("Password:");
         JPasswordField passwordField = new JPasswordField(20);
-        add(registerPasswordLabel);
-        add(passwordField);
+        panel.add(registerPasswordLabel);
+        panel.add(passwordField);
 
         // Register button
         JButton registerButton = new JButton("Register");
@@ -116,14 +118,17 @@ class RegisterPanel extends JPanel {
                 passwordField.setText("");
             }
         });
-        add(registerButton);
+        panel.add(registerButton);
 
         // Redirect to login page
         JButton loginRedirectButton = new JButton("Go to Login page");
         loginRedirectButton.addActionListener(e -> {
             userInterface.showPanel("login");
         });
-        add(loginRedirectButton);
+        panel.add(loginRedirectButton);
+
+        add(new JLabel(
+                "You can only register as a technician. Centre managers can only be created by other centre managers or by manually modifying the csv."));
     }
 }
 
