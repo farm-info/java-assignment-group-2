@@ -37,7 +37,6 @@ public class CustomerManagement extends TablePanel {
             public void actionPerformed(ActionEvent e) {
                 int modelRow = Integer.valueOf(e.getActionCommand());
                 Customer customer = CustomerTableModel.customers.get(modelRow);
-                // TODO windows should not set themselves visible
                 BookAppointment window = new BookAppointment(system, customer);
                 window.setVisible(true);
             }

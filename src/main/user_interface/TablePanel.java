@@ -14,6 +14,7 @@ abstract class TablePanel extends JPanel {
     protected JTable itemsTable;
     protected int buttonColumnIndex;
 
+    // Creates the UI
     public TablePanel(AHHASCSystem system, String title, int buttonColumnIndex) {
         this.system = system;
         this.buttonColumnIndex = buttonColumnIndex;
@@ -54,6 +55,7 @@ abstract class TablePanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
+    // Abstract methods
     abstract public void setModel(JTable itemTable);
 
     abstract public void goToItem(int modelRow);
