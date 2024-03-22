@@ -53,9 +53,7 @@ class CentreManagerAppointmentWindow extends AppointmentWindow {
     private CentreManagerAppointmentPanel centreManagerAppointmentPanel;
 
     public CentreManagerAppointmentWindow(CentreManagerAppointmentPanel centreManagerAppointmentPanel,
-            Appointment appointment,
-            AHHASCSystem system) {
-
+            Appointment appointment, AHHASCSystem system) {
         super(centreManagerAppointmentPanel, appointment, system);
         this.centreManagerAppointmentPanel = centreManagerAppointmentPanel;
 

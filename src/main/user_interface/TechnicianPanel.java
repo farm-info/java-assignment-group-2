@@ -1,16 +1,13 @@
 package main.user_interface;
 
 import java.util.*;
-import java.math.BigDecimal;
 
 import javax.swing.*;
-import javax.swing.text.*;
-import java.awt.*;
 
 import main.system.*;
 
 /*
- * technicianPanel: a table o   f all appointments, uses getAssignedAppointments()
+ * technicianPanel: a table of all appointments, uses getAssignedAppointments()
  * - each row is an appointment and contains a button to view the appointment
  */
 class TechnicianPanel extends AppointmentsPanel {
