@@ -86,7 +86,7 @@ class RegisterPanel extends JPanel {
 
             User newUser;
             try {
-                newUser = system.addUser(username, password, User.Role.TECHNICIAN);
+                newUser = system.register(username, password);
 
             } catch (UserNameAlreadyExistsException e1) {
                 JOptionPane.showMessageDialog(

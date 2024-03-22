@@ -81,13 +81,21 @@ public class AHHASCSystem {
         System.out.println("Logged out.");
     }
 
+    public User register(String username, String password) throws UserNameAlreadyExistsException {
+        return createUser(username, password, User.Role.TECHNICIAN);
+    }
+
     // user management
     public User addUser(String username, String password, User.Role role) throws UserNameAlreadyExistsException {
         if (!hasCurrentUserPermission(User.Role.CENTRE_MANAGER)) {
-            System.out.println("Permission denied: Get user list");
+            System.out.println("Permission denied: Add user");
             return null;
         }
 
+        return createUser(username, password, role);
+    }
+
+    private User createUser(String username, String password, User.Role role) throws UserNameAlreadyExistsException {
         boolean usernameExists = users.containsKey(username);
         if (usernameExists) {
             System.out.println("Username already exists.");
