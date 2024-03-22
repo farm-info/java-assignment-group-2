@@ -65,13 +65,14 @@ abstract class AppointmentWindow extends JFrame {
         createTitlePanel();
         createDetailsPanel();
         createBottomPanels();
+
+        add(panel);
     }
 
     private void createFrameAndPanel() {
         setTitle("Appointment Details");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(600, 400);
-        setContentPane(panel);
 
         nestedPanel = new JPanel(new BorderLayout());
         panel = new JPanel(new BorderLayout());
